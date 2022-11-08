@@ -18,7 +18,11 @@ class Main {
         System.out.println(content.content8);
         System.out.println(content.content9);
         System.out.println(content.content10);
-
+        System.out.println(content.content11);
+        System.out.println(content.content12);
+        System.out.println(content.content13);
+        System.out.println(content.content14);
+        System.out.println(content.content15);
     }
 
 }
@@ -58,8 +62,52 @@ class Content {
     String content9 = ("\033[0;1m-	Four mechanisms"
             + " that can facilitate a focus on climate resilience in national and sub-national policy processes. The mechanisms also aim to guide support provided by development co-operation in light of partner countries’ own domestic priorities on climate change and development.\n");
 
-    String content10 = ("\033[0;1m-	•	Three enablers"
-            + "for action for strengthening climate resilience, and identifying opportunities for government officials and development co-operation to enhance these enablers.\n");
+    String content10 = ("\033[0;1m-	Three enablers"
+            + " for action for strengthening climate resilience, and identifying opportunities for government officials and development co-operation to enhance these enablers.\n");
+
+    String content11 = "Countries are the drivers of domestic efforts to strengthen climate resilience.\nThe mechanisms and enablers therefore take the country perspective "
+            + ("\033[3m(including national, sub-national and community levels)\033[0m\n")
+            + "as the starting point. This is complemented with a focus on the potential role of development co-operation or other actors supporting policy processes in partner countries.";
+    String content12 = "This Guidance is not a planning tool. Instead, it highlights potential actions by different stakeholders across levels of governance through the proposed mechanisms and enablers to strengthen climate resilience. In each of the sections on the mechanisms and enablers, a list of tools and available guidance complements the rationale for the proposed set of actions. The aspirations are treated as cross-cutting considerations, but recommendations for action are not systematically put forward.\n";
+
+    String content13 = ("\033[3m // Individual tasks to strive towards:\n\033[0m");
+    String content14 = "Here are a some of the latest objectives that you could get going on and start making a difference towards a more resilient & safe future for earth straight away!\n";
+    String content15 = "1. Spread the Word\n"
+            + "\n"
+            + "Encourage your friends, family and co-workers to reduce their carbon pollution. Join a global movement like Count Us In, which aims to inspire 1 billion people to take practical steps and challenge their leaders to act more boldly on climate. Organizers of the platform say that if 1 billion people took action, they could reduce as much as 20 per cent of global carbon emissions. Or you could sign up to the UN’s  #ActNow campaign on climate change and sustainability and add your voice to this critical global debate.\n"
+            + "\n"
+            + "2. Keep up the political pressure\n" +
+            "\n"
+            + "Lobby local politicians and businesses to support efforts to cut emissions and reduce carbon pollution. #ActNow Speak Up has sections on political pressure and corporate action - and Count Us In also has some handy tips for how to do this. Pick an environmental issue you care about, decide on a specific request for change and then try to arrange a meeting with your local representative. It might seem intimidating but your voice deserves to be heard. If humanity is to succeed in tackling the climate emergency, politicians must be part of the solution. Its up to all of us to keep up with the pressure.\n"
+            + "\n"
+            + "4. Rein in your power use\n"
+            + "\n"
+            + "If you can, switch to a zero-carbon or renewable energy provider. Install solar panels on your roof. Be more efficient: turn your heating down a degree or two, if possible. Switch off appliances and lights when you are not using them and better yet buy the most efficient products in the first place (hint: this will save you money!). Insulate your loft or roof: you will be warmer in the winter, cooler in the summer and save some money too.\n"
+            + "\n"
+            + "5. Tweak your diet\n"
+            + "\n"
+            + "Eat more plant-based meals, your body and the planet will thank you. Today, around 60 per cent of the worlds agricultural land is used for livestock grazing and people in many countries are consuming more animal-sourced food than is healthy. Plant-rich diets can help reduce chronic illnesses, such as heart disease, stroke, diabetes and cancer.\n"
+            + "\n"
+            + "6. Shop local and buy sustainable\n"
+            + "\n"
+            + "To reduce your foods carbon footprint, buy local and seasonal foods. You will be helping small businesses and farms in your area and reducing fossil fuel emissions associated with transport and cold chain storage. Sustainable agriculture uses up to 56 per cent less energy, creates 64 per cent fewer emissions and allows for greater levels of biodiversity than conventional farming. Go one step further and try growing your own fruit, vegetables and herbs. You can plant them in a garden, on a balcony or even on a window sill. Set up a community garden in your neighbourhood to get others involved.\n"
+            + "\n"
+            + "7. Dont waste food\n"
+            + "\n"
+            + "One-third of all food produced is either lost or wasted. According to UNEPs Food Waste Index Report 2021, people globally waste 1 billion tonnes of food each year, which accounts for around 8-10 per cent of global greenhouse gas emissions. Avoid waste by only buying what you need. Take advantage of every edible part of the foods you purchase. Measure portion sizes of rice and other staples before cooking them, store food correctly (use your freezer if you have one), be creative with leftovers, share extras with your friends and neighbours and contribute to a local food-sharing scheme. Make compost out of inedible remnants and use it to fertilize your garden. Composting is one of the best options for managing organic waste while also reducing environmental impacts.\n"
+            + "\n"
+            + "8. Dress (climate) smart\n"
+            + "\n"
+            + "The fashion industry accounts for 8-10 per cent of global carbon emissions, more than all international flights and maritime shipping combined, and fast fashion has created a throwaway culture that sees clothes quickly end up in landfills. But we can change this. Buy fewer new clothes and wear them longer. Seek out sustainable labels and use rental services for special occasions rather than buying new items that will only be worn once. Recycle pre-loved clothes and repair when necessary.\n"
+            + "\n"
+            + "9. Plant trees\n"
+            + "\n"
+            + "Every year approximately 12 million hectares of forest are destroyed and this deforestation, together with agriculture and other land use changes, is responsible for roughly 25 per cent of global greenhouse gas emissions. We can all play a part in reversing this trend by planting trees, either individually or as part of a collective. For example, the Plant-for-the-Planet initiative allows people to sponsor tree-planting around the world."
+            + "Check out this UNEP guide to see what else you can do as part of the UN Decade on Ecosystem Restoration, a global drive to halt the degradation of land and oceans, protect biodiversity, and rebuild ecosystems.\n"
+            + "\n"
+            + "10. Focus on planet-friendly investments\n"
+            + "\n"
+            + "Individuals can also spur change through their savings and investments by choosing financial institutions that do not invest in carbon-polluting industries. #ActNow Speak Up has a section on money and so does Count Us In. This sends a clear signal to the market and already many financial institutions are offering more ethical investments, allowing you to use your money to support causes you believe in and avoid those you don’t. You can ask your financial institution about their responsible banking policies and find out how they rank in independent research.\n";
 
 }
 
