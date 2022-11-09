@@ -41,8 +41,6 @@ class Main {
 
 
 class UserOptions {
-    String menu = "";
-
     void displayOptionsMenu(String privilleges) {
         System.out.println("");
         System.out.println("Please enter a number depending on what you want to do.");
