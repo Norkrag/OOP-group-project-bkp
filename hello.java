@@ -22,7 +22,6 @@ class Main {
     public static void main(String[] args) {
 
         user.authenticate();
-
         /*
          * Test - create some content
          * This should be possible to do from the application when implemented
@@ -30,20 +29,7 @@ class Main {
         content.createContent("Title 1", "Content1");
         content.createContent("Title 2", "Content2");
         content.createContent("Title 3", "Content2");
-
-        /*
-         * Go through every content entry / post in the 'database'
-         * Display the title of each entry
-         */
-        for (int i = 1; i <= content.getNumberOfContentEntries(); i++) {
-            /*
-             * id starts at 0;
-             * we add 1 to the id so the user sees entries starting from 1, not 0.
-             * Display all ContentEntry(es) available by title and a number preceding each
-             * title.
-             */
-            System.out.println(i + ". " + content.returnContentTitleForId(i));
-        }
+        content.displayContentEntries();
     }
 
 }
@@ -74,7 +60,7 @@ class ContentService {
         this.createContent("Default Content Title 3", "Default Content Content 3");
     }
 
-    void createContent(String title, String content) {
+    public void createContent(String title, String content) {
         ContentEntry contentEntry = new ContentEntry();
         Main.debugPrint("Created contentEntry with id: " + id);
 
@@ -106,19 +92,35 @@ class ContentService {
         System.out.println(contentArray.get(arrayId).content);
     }
 
-    public String returnContentTitleForId(int id) {
+    private String returnContentTitleForId(int id) {
         /* the array id starts from 0, not 1 */
         final int arrayId = id - 1;
 
         return contentArray.get(arrayId).title;
     }
 
-    public int getNumberOfContentEntries() {
+    private int getNumberOfContentEntries() {
         /*
          * return current id value -1
          * (since id was incremented but latest value is not yet used)
          */
         return id - 1;
+    }
+
+    public void displayContentEntries() {
+        /*
+         * Go through every content entry / post in the 'database'
+         * Display the title of each entry
+         */
+        for (int i = 1; i <= getNumberOfContentEntries(); i++) {
+            /*
+             * id starts at 0;
+             * we add 1 to the id so the user sees entries starting from 1, not 0.
+             * Display all ContentEntry(es) available by title and a number preceding each
+             * title.
+             */
+            System.out.println(i + ". " + returnContentTitleForId(i));
+        }
     }
 
     // String content1 = " ";
