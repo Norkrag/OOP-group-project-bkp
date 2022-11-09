@@ -16,21 +16,21 @@ class Main {
     static boolean debug = true;
     /* End | Remove debugging code */
 
-    static ContentService content = new ContentService();
-    static UserService user = new UserService();
+    static ContentService contentService = new ContentService();
+    static UserService userService = new UserService();
     static UserOptions userOptions = new UserOptions();
 
     public static void main(String[] args) {
 
-        user.authenticate();
+        userService.authenticate();
         /*
          * Test - create some content
          * This should be possible to do from the application when implemented
          */
-        content.createContent("Title 1", "Content1");
-        content.createContent("Title 2", "Content2");
-        content.createContent("Title 3", "Content3");
-        userOptions.displayOptionsMenu(user.privilleges);
+        contentService.createContent("Title 1", "Content1");
+        contentService.createContent("Title 2", "Content2");
+        contentService.createContent("Title 3", "Content3");
+        userOptions.displayOptionsMenu(userService.privilleges);
 
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
