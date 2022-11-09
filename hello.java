@@ -18,6 +18,7 @@ class Main {
 
     static ContentService content = new ContentService();
     static UserService user = new UserService();
+    static UserOptions userOptions = new UserOptions();
 
     public static void main(String[] args) {
 
@@ -28,10 +29,43 @@ class Main {
          */
         content.createContent("Title 1", "Content1");
         content.createContent("Title 2", "Content2");
-        content.createContent("Title 3", "Content2");
-        content.displayContentEntries();
+        content.createContent("Title 3", "Content3");
+        userOptions.displayOptionsMenu(user.privilleges);
+
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        scanner.close();
     }
 
+}
+
+
+class UserOptions {
+    String menu = "";
+
+    void displayOptionsMenu(String privilleges) {
+        System.out.println("");
+        System.out.println("Please enter a number depending on what you want to do.");
+        System.out.println("Here are your options:");
+
+        if (privilleges == "guest") {
+            System.out.println("1. View Entries");
+            System.out.println("2. Search for an entry");
+        }
+        else if (privilleges ==  "admin") {
+            System.out.println("1. View Entries");
+            System.out.println("2. Search for an entry");
+            System.out.println("3. Add Entry");
+            System.out.println("4. Delete Entry");
+            System.out.println("5. Edit Entry");
+        }
+        else {
+            System.out.println("Invalid role");
+        }
+        System.out.println("");
+        System.out.println("What do you want to do?");
+        System.out.println("Option number:");
+    }
 }
 
 class ContentService {
@@ -307,9 +341,10 @@ class ContentService {
 }
 
 class UserService {
+    /* Initialize privileges as guest */
+    public String privilleges = "guest";
+
     public void authenticate() {
-        /* Initialize privileges as guest */
-        String privilleges = "guest";
         String password = "password";
         /* Create a new scanner object to be able to parse user input */
         Scanner scanner = new Scanner(System.in);
@@ -392,9 +427,6 @@ class UserService {
         } else {
             /* Nothing, user already has guest privilleges by default */
         }
-
-        /* We no longer need to prompt the user for input, so scanner can be closed */
-        scanner.close();
 
         if (privilleges == "admin") {
             System.out.println("Welcome, administrator!");
