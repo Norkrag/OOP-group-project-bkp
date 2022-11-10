@@ -13,7 +13,7 @@ class Main {
     }
 
     /* Set to false if you don't want debug messages in console */
-    static boolean debug = true;
+    static boolean debug = false;
     /* End | Remove debugging code */
 
     static ContentService contentService = new ContentService();
@@ -101,6 +101,9 @@ class UserOptions {
             case 1:
                 displayEntries(scanner);
                 break;
+            case 2:
+                searchEntries(scanner);
+                break;
             default:
                 System.out.println("Error! Code should not be reached");
         }
@@ -115,6 +118,10 @@ class UserOptions {
                 System.out.println("Option selected: View Entries");
                 System.out.println("Showing entries:");
                 break;
+            case 2:
+                System.out.println("Option selected: Search for an entry");
+                System.out.println("Enter your search term to search for a specific title:");
+                break;
             default:
                 System.out.println("Error! Code should not be reached");
         }
@@ -123,8 +130,8 @@ class UserOptions {
 
     void displayEntries(Scanner scanner) {
         int userChosenEntry = 0;
-
         optionSelectedText(1);
+
         contentService.displayContentEntries();
 
         /* Keeps track if user selects 'y', 'n' or another option */
@@ -167,6 +174,10 @@ class UserOptions {
                 scanner.nextLine(); /* discard newline character: '\n' */
             }
 
+            /*
+             * TODO - Ask user if they want to do anything after displaying entry
+             * Or go back to main menu.
+             */
             contentService.viewContentById(userChosenEntry);
         } else if (userPromptChoice.equals("n")) {
             System.out.println("Going back to main menu...");
@@ -175,6 +186,15 @@ class UserOptions {
         }
     }
 
+    void searchEntries(Scanner scanner) {
+        optionSelectedText(2);
+
+        String userSearchCriteria = scanner.nextLine();
+        System.out.println("");
+
+        System.out.println("Here are the results for your search:");
+        contentService.displayContentEntriesMatchingCriteria(userSearchCriteria);
+    }
 }
 
 class ContentService {
@@ -271,6 +291,24 @@ class ContentService {
              * title.
              */
             System.out.println(i + ". " + returnContentTitleForId(i));
+        }
+    }
+
+    public void displayContentEntriesMatchingCriteria(String searchTerm) {
+        /*
+         * Go through every content entry / post in the 'database'
+         * Display the title of each entry
+         */
+        for (int i = 1; i <= getNumberOfContentEntries(); i++) {
+            /*
+             * id starts at 0;
+             * we add 1 to the id so the user sees entries starting from 1, not 0.
+             * Display all ContentEntry(es) available by title and a number preceding each
+             * title.
+             */
+            if (returnContentTitleForId(i).contains(searchTerm)) {
+                System.out.println(i + ". " + returnContentTitleForId(i));
+            }
         }
     }
 
