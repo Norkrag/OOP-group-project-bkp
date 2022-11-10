@@ -42,6 +42,12 @@ class Main {
     }
 
     public static String handleUserYesNo(Scanner scanner, String... optionalMessage) {
+        if (optionalMessage[0].length() > 0) {
+            System.out.println("");
+            System.out.println(optionalMessage[0]);
+            System.out.println("y/n");
+        }
+ 
         /* Keeps track if user selects 'y', 'n' or another option */
         String userPromptChoice = "";
         /* Set to true when user does not answer with 'y' or 'n' to 'y/n' dialogue */
@@ -214,8 +220,6 @@ class UserOptions {
         contentService.displayContentEntries();
 
         // TODO - Add option to open all entries as once as well
-        System.out.println("Do you want to view a specific entry?");
-        System.out.println("y/n");
         /* Keeps track if user selects 'y', 'n' or another option */
         String userPromptChoice = Main.handleUserYesNo(scanner, "Do you want to view a specific entry?");
 
@@ -565,8 +569,6 @@ class UserService {
         String userPasswordInput = "";
         Integer userDialogueChoice = 0;
 
-        System.out.println("Do you want to authenticate as administrator?");
-        System.out.println("y/n");
         /* Keeps track if user selects 'y', 'n' or another option */
         String userPromptChoice = Main.handleUserYesNo(scanner, "Do you want to authenticate as administrator?");
 
