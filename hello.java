@@ -226,6 +226,7 @@ class UserOptions {
 
     void optionSelectedText(int optionNumber) {
         MenuFormatting.menuPrint("");
+        // TODO - Add Edit Entry option
         switch (optionNumber) {
             case 1:
                 MenuFormatting.menuPrint("Option selected: View Entries");
