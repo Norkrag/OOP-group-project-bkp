@@ -72,6 +72,7 @@ class Main {
         scanner.close();
         MenuFormatting.menuPrint("");
         MenuFormatting.menuPrint("Quitting application...");
+        MenuFormatting.menuPrintFullLine();
     }
 
     public static String handleUserYesNo(Scanner scanner, String... optionalMessage) {
@@ -205,6 +206,7 @@ class UserOptions {
                      */
                 if (userPrivilleges == "admin") {
                     MenuFormatting.menuPrint("ToDo - Adding entry...");
+                    returnCode = handleOptionFinished(scanner);
                 } else if (userPrivilleges == "guest") {
                     MenuFormatting.menuPrint("Logging off...");
                     returnCode = 0; /* handle externally - go back to authentication */
@@ -217,6 +219,7 @@ class UserOptions {
                      */
                 if (userPrivilleges == "admin") {
                     MenuFormatting.menuPrint("ToDo - Deleting entry...");
+                    returnCode = handleOptionFinished(scanner);
                 } else if (userPrivilleges == "guest") {
                     /* application will quit in main */
                 }
@@ -224,6 +227,7 @@ class UserOptions {
             // TODO - Placeholder, need to implement
             case 5: /* Only admin has options 5+ */
                 MenuFormatting.menuPrint("ToDo - Editing entry...");
+                returnCode = handleOptionFinished(scanner);
                 break;
             // TODO - Placeholder, need to implement
             case 6: /* Only admin has options 5+ */
