@@ -20,16 +20,6 @@ class MenuFormatting {
 }
 
 class Main {
-    /*
-     * TODO
-     * Start | Remove debugging code
-     */
-    static void debugPrint(String content) {
-        if (debug) {
-            System.out.println(content);
-        }
-    }
-
     /* Set to false if you don't want debug messages in console */
     static boolean debug = false;
     /* End | Remove debugging code */
@@ -39,7 +29,7 @@ class Main {
     static UserOptions userOptions = new UserOptions(contentService);
 
     public static void main(String[] args) {
-        // TODO - Add menu formatting to user input as well
+        // TODO - Add menu formatting to user input as well (add missing # at left column)
         Scanner scanner = new Scanner(System.in);
         /* initialize returnCode with 0 to allow user authentication during first run */
         int returnCode = 0;
@@ -52,8 +42,6 @@ class Main {
         MenuFormatting.menuPrintFullLine();
 
         do {
-            Main.debugPrint("returnCode = " + returnCode);
-
             if (returnCode == 0) {
                 userService.authenticate(scanner);
             }
@@ -106,7 +94,6 @@ class Main {
     }
 }
 
-// TODO - Add Log off option
 class UserOptions {
     String userPrivilleges = "";
     ContentService contentService;
@@ -194,7 +181,6 @@ class UserOptions {
                 searchEntries(scanner);
                 returnCode = handleOptionFinished(scanner);
                 break;
-            // TODO - Placeholder, need to implement
             case 3: /*
                      * Different action depending on user type.
                      * Each user has a separate menu with different numbers
@@ -225,7 +211,6 @@ class UserOptions {
                     /* application will quit in main */
                 }
                 break;
-            // TODO - Placeholder, need to implement
             case 5: /* Only admin has options 5+ */
                 MenuFormatting.menuPrint("Logging off...");
                 returnCode = 0; /* handle externally - go back to authentication */
@@ -322,10 +307,6 @@ class UserOptions {
                 scanner.nextLine(); /* discard newline character: '\n' */
             }
 
-            /*
-             * TODO - Ask user if they want to do anything after displaying entry
-             * Or go back to main menu.
-             */
             contentService.viewContentById(userChosenEntry);
         } else if (userPromptChoice.equals("n")) {
             /* handled externally in handleUserChoice() */
@@ -337,9 +318,6 @@ class UserOptions {
         optionSelectedText(4);
 
         contentService.displayContentEntries();
-
-        // TODO - Add option to open all entries as once as well
-        /* Keeps track if user selects 'y', 'n' or another option */
         MenuFormatting.menuPrint("Which entry do you want to delete?");
         System.out.print("# ");
         userChosenEntry = scanner.nextInt();
@@ -365,7 +343,6 @@ class UserOptions {
 
         MenuFormatting.menuPrint("Here are the results for your search:");
         contentService.displayContentEntriesMatchingCriteria(userSearchCriteria);
-        // TODO - Go Back to main menu
     }
 }
 
@@ -405,7 +382,6 @@ class ContentService {
 
     public void createContent(String title, String... content) {
         ContentEntry contentEntry = new ContentEntry();
-        Main.debugPrint("Created contentEntry with id: " + id);
 
         contentEntry.id = id; /* assign the first available id to entry */
         /* assign a title & content based on function parameters */
@@ -428,7 +404,6 @@ class ContentService {
         id--;
     }
 
-    // TODO - Add ability to search by Title / id
     public void viewContentById(int id) {
         /* the array id starts from 0, not 1 */
         final int arrayId = id - 1;
