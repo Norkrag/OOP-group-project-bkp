@@ -98,6 +98,8 @@ class Main {
                 }
                 MenuFormatting.menuPrint("y/n");
             }
+
+            System.out.print("# ");
             userPromptChoice = scanner.nextLine();
             /*
              * Convert user input to not restrict user to a case sensitive answer
@@ -179,12 +181,14 @@ class UserOptions {
         }
 
         // TODO - Handle non int input (for all nextInt() in code)
+        System.out.print("# ");
         int userMenuChoice = scanner.nextInt();
         scanner.nextLine(); /* discard newline character: '\n' */
 
         while (userMenuChoice < 1 || userMenuChoice > maxUserOptions) {
             MenuFormatting.menuPrint("Invalid command, please try again.");
             MenuFormatting.menuPrint("Enter a number between 1 and " + maxUserOptions);
+            System.out.print("# ");
             userMenuChoice = scanner.nextInt();
             scanner.nextLine(); /* discard newline character: '\n' */
         }
@@ -273,12 +277,14 @@ class UserOptions {
             MenuFormatting.menuPrint("");
             MenuFormatting.menuPrint("Which entry?");
             MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
+            System.out.print("# ");
             userChosenEntry = scanner.nextInt();
             scanner.nextLine(); /* discard newline character: '\n' */
 
             while (userChosenEntry < 1 || userChosenEntry > contentService.getNumberOfContentEntries()) {
                 MenuFormatting.menuPrint("Invalid command, please try again.");
                 MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
+                System.out.print("# ");
                 userChosenEntry = scanner.nextInt();
                 scanner.nextLine(); /* discard newline character: '\n' */
             }
@@ -296,6 +302,7 @@ class UserOptions {
     void searchEntries(Scanner scanner) {
         optionSelectedText(2);
 
+        System.out.print("# ");
         String userSearchCriteria = scanner.nextLine();
         MenuFormatting.menuPrint("");
 
@@ -625,12 +632,14 @@ class UserService {
             while ((userDialogueChoice.equals(0) || userDialogueChoice.equals(1))
                     && !userPasswordInput.equals(password)) {
                 MenuFormatting.menuPrint("Please input password:");
+                System.out.print("# ");
                 userPasswordInput = scanner.nextLine();
                 /* Total password entry attempts */
                 int attempts = 1;
 
                 while (!userPasswordInput.equals(password)) {
                     MenuFormatting.menuPrint("Wrong password! Try again:");
+                    System.out.print("# ");
                     userPasswordInput = scanner.nextLine();
                     attempts++;
 
@@ -652,6 +661,7 @@ class UserService {
                     MenuFormatting.menuPrint("1. Keep trying to authenticate as administrator.");
                     MenuFormatting.menuPrint("2. Continue as guest.");
 
+                    System.out.print("# ");
                     userDialogueChoice = scanner.nextInt();
                     /*
                      * discard newline character: '\n'
@@ -660,6 +670,7 @@ class UserService {
                     scanner.nextLine();
                     while (!(userDialogueChoice.equals(1) || userDialogueChoice.equals(2))) {
                         MenuFormatting.menuPrint("Invalid command, please try again.");
+                        System.out.print("# ");
                         userDialogueChoice = scanner.nextInt();
                         scanner.nextLine(); /* discard newline character: '\n' */
                     }
