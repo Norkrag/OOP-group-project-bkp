@@ -1,6 +1,24 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
+class MenuFormatting {
+    static void menuPrint(String string) {
+        System.out.println("# " + string + " ".repeat(72 - 2 - string.length() - 1) + "#");
+    }
+
+    static void menuPrintWithSpacing(int spaces, String string) {
+        System.out.println("#".repeat(spaces) + " " + string + " ".repeat(72 - spaces - 1 - string.length() - 1) + "#");
+    }
+
+    static void menuPrintWithSpacingEnclosed(int spaces, String string) {
+        System.out.println("#".repeat(spaces) + " " + string + " " + "#".repeat(72 - spaces - 1 - string.length() - 1));
+    }
+
+    static void menuPrintFullLine() {
+        System.out.println("#".repeat(72));
+    }
+}
+
 class Main {
     /*
      * TODO
@@ -13,7 +31,7 @@ class Main {
     }
 
     /* Set to false if you don't want debug messages in console */
-    static boolean debug = true;
+    static boolean debug = false;
     /* End | Remove debugging code */
 
     static ContentService contentService = new ContentService();
@@ -24,6 +42,8 @@ class Main {
         Scanner scanner = new Scanner(System.in);
         /* initialize returnCode with 0 to allow user authentication during first run */
         int returnCode = 0;
+        String APPLICATION_NAME = "APPLICATION_NAME";
+        String WELCOME_MESSAGE = "Welcome to " + APPLICATION_NAME;
         /*
          * Test - create some content
          * This should be possible to do from the application when implemented
@@ -34,6 +54,11 @@ class Main {
 
         do {
             Main.debugPrint("returnCode = " + returnCode);
+            System.out.println("");
+            MenuFormatting.menuPrintFullLine();
+            MenuFormatting.menuPrintWithSpacingEnclosed(5, WELCOME_MESSAGE);
+            MenuFormatting.menuPrintFullLine();
+
             if (returnCode == 0) {
                 userService.authenticate(scanner);
             }
@@ -43,15 +68,16 @@ class Main {
         } while (returnCode != 1);
 
         scanner.close();
-        System.out.println("");
-        System.out.println("Quitting application...");
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrint("Quitting application...");
     }
 
     public static String handleUserYesNo(Scanner scanner, String... optionalMessage) {
         if (optionalMessage[0].length() > 0) {
-            System.out.println("");
-            System.out.println(optionalMessage[0]);
-            System.out.println("y/n");
+            MenuFormatting.menuPrint("");
+            MenuFormatting.menuPrint(optionalMessage[0]);
+            MenuFormatting.menuPrint("y/n");
+
         }
 
         /* Keeps track if user selects 'y', 'n' or another option */
@@ -62,12 +88,12 @@ class Main {
         /* Keep prompting user until they give a valid answer, either 'y' or 'n' */
         do {
             if (wrongInput) {
-                System.out.println("");
-                System.out.println("Invalid command, please try again.");
+                MenuFormatting.menuPrint("");
+                MenuFormatting.menuPrint("Invalid command, please try again.");
                 if (optionalMessage[0].length() > 0) {
-                    System.out.println(optionalMessage[0]);
+                    MenuFormatting.menuPrint(optionalMessage[0]);
                 }
-                System.out.println("y/n");
+                MenuFormatting.menuPrint("y/n");
             }
             userPromptChoice = scanner.nextLine();
             /*
@@ -97,29 +123,29 @@ class UserOptions {
     }
 
     void displayOptionsMenu() {
-        System.out.println("");
-        System.out.println("Please enter a number depending on what you want to do.");
-        System.out.println("Here are your options:");
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrint("Please enter a number depending on what you want to do.");
+        MenuFormatting.menuPrint("Here are your options:");
 
         if (userPrivilleges == "guest") {
-            System.out.println("1. View Entries");
-            System.out.println("2. Search for an entry");
-            System.out.println("3. Log off");
-            System.out.println("4. Quit");
+            MenuFormatting.menuPrint("1. View Entries");
+            MenuFormatting.menuPrint("2. Search for an entry");
+            MenuFormatting.menuPrint("3. Log off");
+            MenuFormatting.menuPrint("4. Quit");
         } else if (userPrivilleges == "admin") {
-            System.out.println("1. View Entries");
-            System.out.println("2. Search for an entry");
-            System.out.println("3. Add Entry");
-            System.out.println("4. Delete Entry");
-            System.out.println("5. Edit Entry");
-            System.out.println("6. Log off");
-            System.out.println("7. Quit");
+            MenuFormatting.menuPrint("1. View Entries");
+            MenuFormatting.menuPrint("2. Search for an entry");
+            MenuFormatting.menuPrint("3. Add Entry");
+            MenuFormatting.menuPrint("4. Delete Entry");
+            MenuFormatting.menuPrint("5. Edit Entry");
+            MenuFormatting.menuPrint("6. Log off");
+            MenuFormatting.menuPrint("7. Quit");
         } else {
-            System.out.println("Invalid role");
+            System.out.println("Error! Invalid role.");
         }
-        System.out.println("");
-        System.out.println("What do you want to do?");
-        System.out.println("Option number:");
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrint("What do you want to do?");
+        MenuFormatting.menuPrint("Option number:");
     }
 
     /*
@@ -141,8 +167,8 @@ class UserOptions {
         scanner.nextLine(); /* discard newline character: '\n' */
 
         while (userMenuChoice < 1 || userMenuChoice > maxUserOptions) {
-            System.out.println("Invalid command, please try again.");
-            System.out.println("Enter a number between 1 and " + maxUserOptions);
+            MenuFormatting.menuPrint("Invalid command, please try again.");
+            MenuFormatting.menuPrint("Enter a number between 1 and " + maxUserOptions);
             userMenuChoice = scanner.nextInt();
             scanner.nextLine(); /* discard newline character: '\n' */
         }
@@ -152,7 +178,7 @@ class UserOptions {
             case 1: /* Both user types have this option */
                 displayEntries(scanner);
                 String userPromptChoice = Main.handleUserYesNo(scanner,
-                        "Do you want to go back to the options menu? If not, application will quit.");
+                        "Go back to the options menu? If not, application will quit.");
                 if (userPromptChoice.equals("y")) {
                     returnCode = 2; /* handle externally - go back to option list */
                 } else if (userPromptChoice.equals("n")) {
@@ -168,9 +194,9 @@ class UserOptions {
                      * Each user has a separate menu with different numbers
                      */
                 if (userPrivilleges == "admin") {
-                    System.out.println("ToDo - Adding entry...");
+                    MenuFormatting.menuPrint("ToDo - Adding entry...");
                 } else if (userPrivilleges == "guest") {
-                    System.out.println("Logging off...");
+                    MenuFormatting.menuPrint("Logging off...");
                     returnCode = 0; /* handle externally - go back to authentication */
                 }
                 break;
@@ -180,18 +206,18 @@ class UserOptions {
                      * Each user has a separate menu with different numbers
                      */
                 if (userPrivilleges == "admin") {
-                    System.out.println("ToDo - Deleting entry...");
+                    MenuFormatting.menuPrint("ToDo - Deleting entry...");
                 } else if (userPrivilleges == "guest") {
                     /* application will quit in main */
                 }
                 break;
             // TODO - Placeholder, need to implement
             case 5: /* Only admin has options 5+ */
-                System.out.println("ToDo - Editing entry...");
+                MenuFormatting.menuPrint("ToDo - Editing entry...");
                 break;
             // TODO - Placeholder, need to implement
             case 6: /* Only admin has options 5+ */
-                System.out.println("Logging off...");
+                MenuFormatting.menuPrint("Logging off...");
                 returnCode = 0; /* handle externally - go back to authentication */
             case 7: /* Only admin has options 5+ */
                 /* application will quit in main */
@@ -204,15 +230,15 @@ class UserOptions {
     }
 
     void optionSelectedText(int optionNumber) {
-        System.out.println("");
+        MenuFormatting.menuPrint("");
         switch (optionNumber) {
             case 1:
-                System.out.println("Option selected: View Entries");
-                System.out.println("Showing entries:");
+                MenuFormatting.menuPrint("Option selected: View Entries");
+                MenuFormatting.menuPrint("Showing entries:");
                 break;
             case 2:
-                System.out.println("Option selected: Search for an entry");
-                System.out.println("Enter your search term to search for a specific title:");
+                MenuFormatting.menuPrint("Option selected: Search for an entry");
+                MenuFormatting.menuPrint("Enter your search term to search for a specific title:");
                 break;
             default:
                 System.out.println("Error! Code should not be reached");
@@ -230,15 +256,15 @@ class UserOptions {
         String userPromptChoice = Main.handleUserYesNo(scanner, "Do you want to view a specific entry?");
 
         if (userPromptChoice.equals("y")) {
-            System.out.println("");
-            System.out.println("Which entry?");
-            System.out.println("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
+            MenuFormatting.menuPrint("");
+            MenuFormatting.menuPrint("Which entry?");
+            MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
             userChosenEntry = scanner.nextInt();
             scanner.nextLine(); /* discard newline character: '\n' */
 
             while (userChosenEntry < 1 || userChosenEntry > contentService.getNumberOfContentEntries()) {
-                System.out.println("Invalid command, please try again.");
-                System.out.println("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
+                MenuFormatting.menuPrint("Invalid command, please try again.");
+                MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
                 userChosenEntry = scanner.nextInt();
                 scanner.nextLine(); /* discard newline character: '\n' */
             }
@@ -257,9 +283,9 @@ class UserOptions {
         optionSelectedText(2);
 
         String userSearchCriteria = scanner.nextLine();
-        System.out.println("");
+        MenuFormatting.menuPrint("");
 
-        System.out.println("Here are the results for your search:");
+        MenuFormatting.menuPrint("Here are the results for your search:");
         contentService.displayContentEntriesMatchingCriteria(userSearchCriteria);
         // TODO - Go Back to main menu
     }
@@ -311,31 +337,19 @@ class ContentService {
         return;
     }
 
-    private String returnStringOfHashes(int numberOfHashes) {
-        String hashes = "";
-
-        for(int i = 0; i < numberOfHashes; i++) {
-            hashes += "#";
-        }
-        
-        return hashes;
-    }
-
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_GREEN = "\u001B[32m";
     // TODO - Add ability to search by Title / id
     public void viewContentById(int id) {
         /* the array id starts from 0, not 1 */
         final int arrayId = id - 1;
 
-        System.out.println("");
-        System.out.println(returnStringOfHashes(72));
-        System.out.println("##### " + contentArray.get(arrayId).title + " " + returnStringOfHashes(72 - 6 - contentArray.get(arrayId).title.length() - 1));
-        System.out.println(returnStringOfHashes(72));
-        System.out.println("");
-        System.out.println(contentArray.get(arrayId).content);
-        System.out.println("");
-        System.out.println(returnStringOfHashes(72));
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrintFullLine();
+        MenuFormatting.menuPrintWithSpacingEnclosed(5, contentArray.get(arrayId).title);
+        MenuFormatting.menuPrintFullLine();
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrint(contentArray.get(arrayId).content);
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrintFullLine();
     }
 
     private String returnContentTitleForId(int id) {
@@ -365,7 +379,7 @@ class ContentService {
              * Display all ContentEntry(es) available by title and a number preceding each
              * title.
              */
-            System.out.println(i + ". " + returnContentTitleForId(i));
+            MenuFormatting.menuPrint(i + ". " + returnContentTitleForId(i));
         }
     }
 
@@ -381,9 +395,12 @@ class ContentService {
              * Display all ContentEntry(es) available by title and a number preceding each
              * title.
              */
-            /* Cast both strings to lowercase to allow user to search without case sensitivity */
+            /*
+             * Cast both strings to lowercase to allow user to search without case
+             * sensitivity
+             */
             if (returnContentTitleForId(i).toLowerCase().contains(searchTerm.toLowerCase())) {
-                System.out.println(i + ". " + returnContentTitleForId(i));
+                MenuFormatting.menuPrint(i + ". " + returnContentTitleForId(i));
             }
         }
     }
@@ -593,13 +610,13 @@ class UserService {
              */
             while ((userDialogueChoice.equals(0) || userDialogueChoice.equals(1))
                     && !userPasswordInput.equals(password)) {
-                System.out.println("Please input password:");
+                MenuFormatting.menuPrint("Please input password:");
                 userPasswordInput = scanner.nextLine();
                 /* Total password entry attempts */
                 int attempts = 1;
 
                 while (!userPasswordInput.equals(password)) {
-                    System.out.println("Wrong password! Try again:");
+                    MenuFormatting.menuPrint("Wrong password! Try again:");
                     userPasswordInput = scanner.nextLine();
                     attempts++;
 
@@ -616,10 +633,10 @@ class UserService {
                 if (userPasswordInput.equals(password)) {
                     privilleges = "admin";
                 } else {
-                    System.out.println("Wrong password!");
-                    System.out.println("You have the following options: ");
-                    System.out.println("1. Keep trying to authenticate as administrator.");
-                    System.out.println("2. Continue as guest.");
+                    MenuFormatting.menuPrint("Wrong password!");
+                    MenuFormatting.menuPrint("You have the following options: ");
+                    MenuFormatting.menuPrint("1. Keep trying to authenticate as administrator.");
+                    MenuFormatting.menuPrint("2. Continue as guest.");
 
                     userDialogueChoice = scanner.nextInt();
                     /*
@@ -628,7 +645,7 @@ class UserService {
                      */
                     scanner.nextLine();
                     while (!(userDialogueChoice.equals(1) || userDialogueChoice.equals(2))) {
-                        System.out.println("Invalid command, please try again.");
+                        MenuFormatting.menuPrint("Invalid command, please try again.");
                         userDialogueChoice = scanner.nextInt();
                         scanner.nextLine(); /* discard newline character: '\n' */
                     }
@@ -639,10 +656,10 @@ class UserService {
         }
 
         if (privilleges == "admin") {
-            System.out.println("Welcome, administrator!");
+            MenuFormatting.menuPrint("Welcome, administrator!");
         } else {
-            System.out.println(" ");
-            System.out.println("Welcome, guest!");
+            MenuFormatting.menuPrint(" ");
+            MenuFormatting.menuPrint("Welcome, guest!");
         }
     }
 }
