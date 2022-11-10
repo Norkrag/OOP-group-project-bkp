@@ -60,6 +60,15 @@ class Main {
         MenuFormatting.menuPrint("Quitting application...");
         MenuFormatting.menuPrintFullLine();
     }
+}
+
+class UserOptions {
+    String userPrivilleges = "";
+    ContentService contentService;
+
+    UserOptions(ContentService contentService) {
+        this.contentService = contentService;
+    }
 
     public static String handleUserYesNo(Scanner scanner, String... optionalMessage) {
         if (optionalMessage[0].length() > 0) {
@@ -97,15 +106,6 @@ class Main {
 
         return userPromptChoice;
     }
-}
-
-class UserOptions {
-    String userPrivilleges = "";
-    ContentService contentService;
-
-    UserOptions(ContentService contentService) {
-        this.contentService = contentService;
-    }
 
     void setPrivileges(String privileges) {
         userPrivilleges = privileges;
@@ -138,7 +138,7 @@ class UserOptions {
 
     int handleOptionFinished(Scanner scanner) {
         int returnCode = Main.backToLogin;
-        String userPromptChoice = Main.handleUserYesNo(scanner,
+        String userPromptChoice = handleUserYesNo(scanner,
                 "Go back to the options menu? If not, application will quit.");
         if (userPromptChoice.equals("y")) {
             returnCode = Main.backtoOptionMenu; /* handle externally - go back to option list */
@@ -273,7 +273,7 @@ class UserOptions {
     }
 
     int deleteEntry(Scanner scanner) {
-        String userPromptChoice = Main.handleUserYesNo(scanner, "Are you sure you want to delete an entry?");
+        String userPromptChoice = handleUserYesNo(scanner, "Are you sure you want to delete an entry?");
         int userChosenEntry = 0;
 
         if (userPromptChoice.equals("y")) {
@@ -312,7 +312,7 @@ class UserOptions {
 
         // TODO - Add option to open all entries as once as well
         /* Keeps track if user selects 'y', 'n' or another option */
-        String userPromptChoice = Main.handleUserYesNo(scanner, "Do you want to view a specific entry?");
+        String userPromptChoice = handleUserYesNo(scanner, "Do you want to view a specific entry?");
 
         if (userPromptChoice.equals("y")) {
             MenuFormatting.menuPrint("");
@@ -478,7 +478,7 @@ class UserService {
         Integer userDialogueChoice = 0;
 
         /* Keeps track if user selects 'y', 'n' or another option */
-        String userPromptChoice = Main.handleUserYesNo(scanner, "Do you want to authenticate as administrator?");
+        String userPromptChoice = UserOptions.handleUserYesNo(scanner, "Do you want to authenticate as administrator?");
 
         if (userPromptChoice.equals("y")) {
             /*
