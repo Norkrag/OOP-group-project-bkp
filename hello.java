@@ -33,7 +33,7 @@ class Main {
 
         do {
             if (returnCode == 0) {
-            userService.authenticate();
+                userService.authenticate();
             }
             userOptions.setPrivileges(userService.privilleges);
             userOptions.displayOptionsMenu();
@@ -41,6 +41,33 @@ class Main {
         } while (returnCode != 1);
     }
 
+    public static String handleUserYesNo(Scanner scanner, String... optionalMessage) {
+        /* Keeps track if user selects 'y', 'n' or another option */
+        String userPromptChoice = "";
+        /* Set to true when user does not answer with 'y' or 'n' to 'y/n' dialogue */
+        boolean wrongInput = false;
+
+        /* Keep prompting user until they give a valid answer, either 'y' or 'n' */
+        do {
+            if (wrongInput) {
+                System.out.println("Invalid command, please try again.");
+                if (optionalMessage[0].length() > 0) {
+                    System.out.println(optionalMessage[0]);
+                }
+                System.out.println("y/n\n");
+            }
+            userPromptChoice = scanner.nextLine();
+            /*
+             * Convert user input to not restrict user to a case sensitive answer
+             * As a result: 'y', 'Y', 'n', 'N' are all valid inputs
+             */
+            userPromptChoice = userPromptChoice.toLowerCase();
+            /* Only matters if user does not answer with an allowed response */
+            wrongInput = true;
+        } while (!(userPromptChoice.equals("y") || userPromptChoice.equals("n")));
+
+        return userPromptChoice;
+    }
 }
 
 // TODO - Add Log off option
@@ -186,31 +213,11 @@ class UserOptions {
 
         contentService.displayContentEntries();
 
-        /* Keeps track if user selects 'y', 'n' or another option */
-        String userPromptChoice = "";
-        /* Set to true when user does not answer with 'y' or 'n' to 'y/n' dialogue */
-        boolean wrongInput = false;
-
         // TODO - Add option to open all entries as once as well
         System.out.println("Do you want to view a specific entry?");
         System.out.println("y/n");
-
-        /* Keep prompting user until they give a valid answer, either 'y' or 'n' */
-        do {
-            if (wrongInput) {
-                System.out.println("Invalid command, please try again.");
-                System.out.println("Do you want to view a specific entry?");
-                System.out.println("y/n\n");
-            }
-            userPromptChoice = scanner.nextLine();
-            /*
-             * Convert user input to not restrict user to a case sensitive answer
-             * As a result: 'y', 'Y', 'n', 'N' are all valid inputs
-             */
-            userPromptChoice = userPromptChoice.toLowerCase();
-            /* Only matters if user does not answer with an allowed response */
-            wrongInput = true;
-        } while (!(userPromptChoice.equals("y") || userPromptChoice.equals("n")));
+        /* Keeps track if user selects 'y', 'n' or another option */
+        String userPromptChoice = Main.handleUserYesNo(scanner, "Do you want to view a specific entry?");
 
         if (userPromptChoice.equals("y")) {
             System.out.println("");
@@ -554,32 +561,15 @@ class UserService {
         String password = "password";
         /* Create a new scanner object to be able to parse user input */
         Scanner scanner = new Scanner(System.in);
-        /* Keeps track if user selects 'y', 'n' or another option */
-        String userPromptChoice = "";
-        /* Set to true when user does not answer with 'y' or 'n' to 'y/n' dialogue */
-        boolean wrongInput = false;
+        
         String userPasswordInput = "";
         Integer userDialogueChoice = 0;
 
         System.out.println("Do you want to authenticate as administrator?");
         System.out.println("y/n");
+        /* Keeps track if user selects 'y', 'n' or another option */
+        String userPromptChoice = Main.handleUserYesNo(scanner, "Do you want to authenticate as administrator?");
 
-        /* Keep prompting user until they give a valid answer, either 'y' or 'n' */
-        do {
-            if (wrongInput) {
-                System.out.println("Invalid command, please try again.");
-                System.out.println("Do you want to authenticate as administrator?");
-                System.out.println("y/n\n");
-            }
-            userPromptChoice = scanner.nextLine();
-            /*
-             * Convert user input to not restrict user to a case sensitive answer
-             * As a result: 'y', 'Y', 'n', 'N' are all valid inputs
-             */
-            userPromptChoice = userPromptChoice.toLowerCase();
-            /* Only matters if user does not answer with an allowed response */
-            wrongInput = true;
-        } while (!(userPromptChoice.equals("y") || userPromptChoice.equals("n")));
 
         if (userPromptChoice.equals("y")) {
             /*
