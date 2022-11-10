@@ -150,6 +150,19 @@ class UserOptions {
         MenuFormatting.menuPrint("Option number:");
     }
 
+    int handleOptionFinished(Scanner scanner) {
+        int returnCode = 0;
+        String userPromptChoice = Main.handleUserYesNo(scanner,
+                "Go back to the options menu? If not, application will quit.");
+        if (userPromptChoice.equals("y")) {
+            returnCode = 2; /* handle externally - go back to option list */
+        } else if (userPromptChoice.equals("n")) {
+            returnCode = 1; /* handle externally - quit application */
+        }
+
+        return returnCode;
+    }
+
     /*
      * return 1 if aplication can exit
      * return 0 if user logs off (to be handled externally and start over)
@@ -179,16 +192,11 @@ class UserOptions {
         switch (userMenuChoice) {
             case 1: /* Both user types have this option */
                 displayEntries(scanner);
-                String userPromptChoice = Main.handleUserYesNo(scanner,
-                        "Go back to the options menu? If not, application will quit.");
-                if (userPromptChoice.equals("y")) {
-                    returnCode = 2; /* handle externally - go back to option list */
-                } else if (userPromptChoice.equals("n")) {
-                    returnCode = 1; /* handle externally - quit application */
-                }
+                returnCode = handleOptionFinished(scanner);
                 break;
             case 2: /* Both user types have this option */
                 searchEntries(scanner);
+                returnCode = handleOptionFinished(scanner);
                 break;
             // TODO - Placeholder, need to implement
             case 3: /*
