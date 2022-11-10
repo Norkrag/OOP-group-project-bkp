@@ -108,13 +108,23 @@ class UserOptions {
         scanner.close();
     }
 
+    void optionSelectedText(int optionNumber) {
+        System.out.println("");
+        switch (optionNumber) {
+            case 1:
+                System.out.println("Option selected: View Entries");
+                System.out.println("Showing entries:");
+                break;
+            default:
+                System.out.println("Error! Code should not be reached");
+        }
+        System.out.println("");
+    }
+
     void displayEntries(Scanner scanner) {
         int userChosenEntry = 0;
-        System.out.println("");
-        System.out.println("Option selected: View Entries");
-        System.out.println("Showing entries:");
-        System.out.println("");
 
+        optionSelectedText(1);
         contentService.displayContentEntries();
 
         /* Keeps track if user selects 'y', 'n' or another option */
