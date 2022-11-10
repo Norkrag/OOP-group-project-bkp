@@ -268,7 +268,7 @@ class UserOptions {
         MenuFormatting.menuPrint("Enter title");
         System.out.print("# ");
         newContentEntryTitle = scanner.nextLine();
-        
+
         MenuFormatting.menuPrint("");
         MenuFormatting.menuPrint("Enter content");
         System.out.print("# ");
@@ -545,7 +545,7 @@ class UserService {
                 }
             }
         } else {
-            /* Nothing, user already has guest privilleges by default */
+            privilleges = "guest";
         }
 
         if (privilleges == "admin") {
