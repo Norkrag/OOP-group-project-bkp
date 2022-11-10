@@ -319,7 +319,6 @@ class ContentService {
             hashes += "#";
         }
         
-        // Main.debugPrint("returnStringOfHashes/hashes" + hashes);
         return hashes;
     }
 
