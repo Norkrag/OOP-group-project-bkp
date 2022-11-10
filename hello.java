@@ -98,11 +98,51 @@ class UserOptions {
         }
 
         switch (userMenuChoice) {
+            /* Both user types have this option */
             case 1:
                 displayEntries(scanner);
                 break;
+            /* Both user types have this option */
             case 2:
                 searchEntries(scanner);
+                break;
+            // TODO - Placeholder, need to implement
+            /*
+             * Different action depending on user type.
+             * Each user has a separate menu with different numbers
+             */
+            case 3:
+                if (userPrivilleges == "admin") {
+                    System.out.println("ToDo - Adding entry...");
+                } else if (userPrivilleges == "guest") {
+                    System.out.println("ToDo - Logging off...");
+                }
+                break;
+            // TODO - Placeholder, need to implement
+            /*
+             * Different action depending on user type.
+             * Each user has a separate menu with different numbers
+             */
+            case 4:
+                if (userPrivilleges == "admin") {
+                    System.out.println("ToDo - Deleting entry...");
+                } else if (userPrivilleges == "guest") {
+                    System.out.println("Quitting application...");
+                }
+                break;
+            // TODO - Placeholder, need to implement
+            /* Only admin has options 5+ */
+            case 5:
+                System.out.println("ToDo - Editing entry...");
+                break;
+            // TODO - Placeholder, need to implement
+            /* Only admin has options 5+ */
+            case 6:
+                System.out.println("ToDo - Logging off...");
+                break;
+            /* Only admin has options 5+ */
+            case 7:
+                System.out.println("Quitting application...");
                 break;
             default:
                 System.out.println("Error! Code should not be reached");
