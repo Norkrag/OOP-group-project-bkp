@@ -43,7 +43,7 @@ class Main {
         Scanner scanner = new Scanner(System.in);
         /* initialize returnCode with 0 to allow user authentication during first run */
         int returnCode = 0;
-        String APPLICATION_NAME = "APPLICATION_NAME";
+        String APPLICATION_NAME = "BetterWorld.io";
         String WELCOME_MESSAGE = "Welcome to " + APPLICATION_NAME;
 
         System.out.println("");
