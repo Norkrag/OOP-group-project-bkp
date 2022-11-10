@@ -201,7 +201,7 @@ class UserOptions {
                      */
                 if (userPrivilleges == "admin") {
                     /*
-                     * TODO - Fix addEntry implementation to allow user to enter 
+                     * TODO - Fix addEntry implementation to allow user to enter
                      * multi row content that doesn't crash program when reaching left border
                      */
                     addEntry(scanner);
@@ -391,7 +391,8 @@ class ContentService {
 
     private void initializeContent() {
 
-        this.createContent("An Introduction", "The global average temperature has increased by more than one degree",
+        this.createContent("An Introduction",
+                "The global average temperature has increased by more than one degree",
                 "Celsius since the pre-industrial era, and the trend is worrying.",
                 "The 2011-20 decade is the warmest on record, with the warmest seven",
                 "years all occurring since 2014, The atmospheric concentrations of",
