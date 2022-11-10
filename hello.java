@@ -200,6 +200,10 @@ class UserOptions {
                      * Each user has a separate menu with different numbers
                      */
                 if (userPrivilleges == "admin") {
+                    /*
+                     * TODO - Fix addEntry implementation to allow user to enter 
+                     * multi row content that doesn't crash program when reaching left border
+                     */
                     addEntry(scanner);
                     returnCode = handleOptionFinished(scanner);
                 } else if (userPrivilleges == "guest") {
@@ -373,7 +377,7 @@ class ContentService {
     static class ContentEntry {
         public int id;
         public String title;
-        public String content;
+        public String[] content;
     }
 
     /* Initialize class on constructor */
@@ -386,12 +390,19 @@ class ContentService {
     }
 
     private void initializeContent() {
-        this.createContent("Default Content Title 1", "Default Content Content 1");
-        this.createContent("Default Content Title 2", "Default Content Content 2");
-        this.createContent("Default Content Title 3", "Default Content Content 3");
+
+        this.createContent("An Introduction", "The global average temperature has increased by more than one degree",
+                "Celsius since the pre-industrial era, and the trend is worrying.",
+                "The 2011-20 decade is the warmest on record, with the warmest seven",
+                "years all occurring since 2014, The atmospheric concentrations of",
+                "major greenhouse gases (GHGs) have locked in this warming trend for",
+                "generations to come. The increase of ocean temperature over the past",
+                "decade has been higher than the long-term average and in 2020,",
+                "the North Atlantic hurricane season had the most significant number",
+                "of named storms on record,");
     }
 
-    public void createContent(String title, String content) {
+    public void createContent(String title, String... content) {
         ContentEntry contentEntry = new ContentEntry();
         Main.debugPrint("Created contentEntry with id: " + id);
 
@@ -426,7 +437,9 @@ class ContentService {
         MenuFormatting.menuPrintWithSpacingEnclosed(5, contentArray.get(arrayId).title);
         MenuFormatting.menuPrintFullLine();
         MenuFormatting.menuPrint("");
-        MenuFormatting.menuPrint(contentArray.get(arrayId).content);
+        for (int i = 0; i < contentArray.get(arrayId).content.length; i++) {
+            MenuFormatting.menuPrint(contentArray.get(arrayId).content[i]);
+        }
         MenuFormatting.menuPrint("");
         MenuFormatting.menuPrintFullLine();
     }
