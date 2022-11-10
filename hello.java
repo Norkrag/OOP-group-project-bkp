@@ -18,7 +18,7 @@ class Main {
 
     static ContentService contentService = new ContentService();
     static UserService userService = new UserService();
-    static UserOptions userOptions = new UserOptions();
+    static UserOptions userOptions = new UserOptions(contentService);
 
     public static void main(String[] args) {
 
@@ -30,40 +30,131 @@ class Main {
         contentService.createContent("Title 1", "Content1");
         contentService.createContent("Title 2", "Content2");
         contentService.createContent("Title 3", "Content3");
-        userOptions.displayOptionsMenu(userService.privilleges);
-
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
-        scanner.close();
+        userOptions.setPrivileges(userService.privilleges);
+        userOptions.displayOptionsMenu();
+        userOptions.handleUserChoice();
     }
 
 }
 
-
+// TODO - Add Log off option
 class UserOptions {
-    void displayOptionsMenu(String privilleges) {
+    String userPrivilleges = "";
+    ContentService contentService;
+
+    UserOptions(ContentService contentService) {
+        this.contentService = contentService;
+    }
+
+    void setPrivileges(String privileges) {
+        userPrivilleges = privileges;
+    }
+
+    void displayOptionsMenu() {
         System.out.println("");
         System.out.println("Please enter a number depending on what you want to do.");
         System.out.println("Here are your options:");
 
-        if (privilleges == "guest") {
+        if (userPrivilleges == "guest") {
             System.out.println("1. View Entries");
             System.out.println("2. Search for an entry");
-        }
-        else if (privilleges ==  "admin") {
+        } else if (userPrivilleges == "admin") {
             System.out.println("1. View Entries");
             System.out.println("2. Search for an entry");
             System.out.println("3. Add Entry");
             System.out.println("4. Delete Entry");
             System.out.println("5. Edit Entry");
-        }
-        else {
+        } else {
             System.out.println("Invalid role");
         }
         System.out.println("");
         System.out.println("What do you want to do?");
         System.out.println("Option number:");
     }
+
+    void handleUserChoice() {
+        Scanner scanner = new Scanner(System.in);
+        int maxUserOptions = 0;
+
+        if (userPrivilleges == "admin") {
+            maxUserOptions = 5;
+        } else if (userPrivilleges == "guest") {
+            maxUserOptions = 2;
+        }
+
+        // TODO - Handle non int input (for all nextInt() in code)
+        int userMenuChoice = scanner.nextInt();
+        scanner.nextLine(); /* discard newline character: '\n' */
+
+        while (userMenuChoice < 1 || userMenuChoice > maxUserOptions) {
+            System.out.println("Invalid command, please try again.");
+            System.out.println("Enter a number between 1 and " + maxUserOptions);
+            userMenuChoice = scanner.nextInt();
+            scanner.nextLine(); /* discard newline character: '\n' */
+        }
+
+        if (userMenuChoice == 1) {
+            displayEntries(scanner, userMenuChoice);
+        }
+
+        scanner.close();
+    }
+
+    void displayEntries(Scanner scanner, int userMenuChoice) {
+        System.out.println("");
+        System.out.println("Option selected: View Entries");
+        System.out.println("Showing entries:");
+        System.out.println("");
+
+        contentService.displayContentEntries();
+
+        /* Keeps track if user selects 'y', 'n' or another option */
+        String userPromptChoice = "";
+        /* Set to true when user does not answer with 'y' or 'n' to 'y/n' dialogue */
+        boolean wrongInput = false;
+
+        System.out.println("Do you want to view a specific entry?");
+        System.out.println("y/n");
+
+        /* Keep prompting user until they give a valid answer, either 'y' or 'n' */
+        do {
+            if (wrongInput) {
+                System.out.println("Invalid command, please try again.");
+                System.out.println("Do you want to view a specific entry?");
+                System.out.println("y/n\n");
+            }
+            userPromptChoice = scanner.nextLine();
+            /*
+             * Convert user input to not restrict user to a case sensitive answer
+             * As a result: 'y', 'Y', 'n', 'N' are all valid inputs
+             */
+            userPromptChoice = userPromptChoice.toLowerCase();
+            /* Only matters if user does not answer with an allowed response */
+            wrongInput = true;
+        } while (!(userPromptChoice.equals("y") || userPromptChoice.equals("n")));
+
+        if (userPromptChoice.equals("y")) {
+
+            System.out.println("Which entry?");
+            System.out.println("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
+            userMenuChoice = scanner.nextInt();
+            scanner.nextLine(); /* discard newline character: '\n' */
+
+            while (userMenuChoice < 1 || userMenuChoice > contentService.getNumberOfContentEntries()) {
+                System.out.println("Invalid command, please try again.");
+                System.out.println("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
+                userMenuChoice = scanner.nextInt();
+                scanner.nextLine(); /* discard newline character: '\n' */
+            }
+
+            contentService.viewContentById(userMenuChoice);
+        } else if (userPromptChoice.equals("n")) {
+            System.out.println("Going back to main menu...");
+            displayOptionsMenu();
+            handleUserChoice();
+        }
+    }
+
 }
 
 class ContentService {
@@ -112,15 +203,21 @@ class ContentService {
         return;
     }
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREEN = "\u001B[32m";
     // TODO - Add ability to search by Title / id
     public void viewContentById(int id) {
         /* the array id starts from 0, not 1 */
         final int arrayId = id - 1;
 
-        System.out.println("Title");
+        System.out.println("");
+        System.out.println("");
+        
+        //TODO - Why does it only work sometimes?
+        // System.out.println(ANSI_GREEN + contentArray.get(arrayId).title + ANSI_RESET);
         System.out.println(contentArray.get(arrayId).title);
+        System.out.println("");
 
-        System.out.println("Content");
         System.out.println(contentArray.get(arrayId).content);
     }
 
@@ -131,7 +228,7 @@ class ContentService {
         return contentArray.get(arrayId).title;
     }
 
-    private int getNumberOfContentEntries() {
+    public int getNumberOfContentEntries() {
         /*
          * return current id value -1
          * (since id was incremented but latest value is not yet used)
