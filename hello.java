@@ -21,8 +21,8 @@ class Main {
     static UserOptions userOptions = new UserOptions(contentService);
 
     public static void main(String[] args) {
-
-        userService.authenticate();
+        /* initialize returnCode with 0 to allow user authentication during first run */
+        int returnCode = 0;
         /*
          * Test - create some content
          * This should be possible to do from the application when implemented
@@ -30,9 +30,15 @@ class Main {
         contentService.createContent("Title 1", "Content1");
         contentService.createContent("Title 2", "Content2");
         contentService.createContent("Title 3", "Content3");
-        userOptions.setPrivileges(userService.privilleges);
-        userOptions.displayOptionsMenu();
-        userOptions.handleUserChoice();
+
+        do {
+            if (returnCode == 0) {
+            userService.authenticate();
+            }
+            userOptions.setPrivileges(userService.privilleges);
+            userOptions.displayOptionsMenu();
+            returnCode = userOptions.handleUserChoice();
+        } while (returnCode != 1);
     }
 
 }
@@ -76,7 +82,11 @@ class UserOptions {
         System.out.println("Option number:");
     }
 
-    void handleUserChoice() {
+    /*
+     * return 1 if aplication can exit
+     * return 0 if user logs off (to be handled externally and start over)
+     */
+    int handleUserChoice() {
         Scanner scanner = new Scanner(System.in);
         int maxUserOptions = 0;
 
@@ -101,7 +111,7 @@ class UserOptions {
             /* Both user types have this option */
             case 1:
                 displayEntries(scanner);
-                break;
+                return 2; /* handle externally - go back to option list */
             /* Both user types have this option */
             case 2:
                 searchEntries(scanner);
@@ -115,7 +125,8 @@ class UserOptions {
                 if (userPrivilleges == "admin") {
                     System.out.println("ToDo - Adding entry...");
                 } else if (userPrivilleges == "guest") {
-                    System.out.println("ToDo - Logging off...");
+                    System.out.println("Logging off...");
+                    return 0; /* handle externally - go back to authentication */
                 }
                 break;
             // TODO - Placeholder, need to implement
@@ -138,8 +149,8 @@ class UserOptions {
             // TODO - Placeholder, need to implement
             /* Only admin has options 5+ */
             case 6:
-                System.out.println("ToDo - Logging off...");
-                break;
+                System.out.println("Logging off...");
+                return 0; /* handle externally - go back to authentication */
             /* Only admin has options 5+ */
             case 7:
                 System.out.println("Quitting application...");
@@ -149,6 +160,7 @@ class UserOptions {
         }
 
         scanner.close();
+        return 1;
     }
 
     void optionSelectedText(int optionNumber) {
@@ -221,8 +233,6 @@ class UserOptions {
             contentService.viewContentById(userChosenEntry);
         } else if (userPromptChoice.equals("n")) {
             System.out.println("Going back to main menu...");
-            displayOptionsMenu();
-            handleUserChoice();
         }
     }
 
