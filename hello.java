@@ -58,12 +58,14 @@ class UserOptions {
         if (userPrivilleges == "guest") {
             System.out.println("1. View Entries");
             System.out.println("2. Search for an entry");
+            System.out.println("3. Log off");
         } else if (userPrivilleges == "admin") {
             System.out.println("1. View Entries");
             System.out.println("2. Search for an entry");
             System.out.println("3. Add Entry");
             System.out.println("4. Delete Entry");
             System.out.println("5. Edit Entry");
+            System.out.println("6. Log off");
         } else {
             System.out.println("Invalid role");
         }
