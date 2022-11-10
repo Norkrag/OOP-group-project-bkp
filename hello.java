@@ -222,7 +222,7 @@ class UserOptions {
                      * Each user has a separate menu with different numbers
                      */
                 if (userPrivilleges == "admin") {
-                    MenuFormatting.menuPrint("ToDo - Deleting entry...");
+                    deleteEntry(scanner);
                     returnCode = handleOptionFinished(scanner);
                 } else if (userPrivilleges == "guest") {
                     /* application will quit in main */
@@ -258,9 +258,18 @@ class UserOptions {
                 MenuFormatting.menuPrint("Option selected: Search for an entry");
                 MenuFormatting.menuPrint("Enter your search term to search for a specific title:");
                 break;
+            case 4:
+                MenuFormatting.menuPrint("Option selected: Delete Entry");
+                MenuFormatting.menuPrint("Showing entries:");
+                break;
             default:
                 System.out.println("Error! Code should not be reached");
         }
+    }
+
+    void deleteEntry(Scanner scanner) {
+        MenuFormatting.menuPrint("Which entry do you want to delete?");
+        displayEntriesToDelete(scanner);
     }
 
     void displayEntries(Scanner scanner) {
@@ -276,14 +285,14 @@ class UserOptions {
         if (userPromptChoice.equals("y")) {
             MenuFormatting.menuPrint("");
             MenuFormatting.menuPrint("Which entry?");
-            MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
+            MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentArray.size());
             System.out.print("# ");
             userChosenEntry = scanner.nextInt();
             scanner.nextLine(); /* discard newline character: '\n' */
 
-            while (userChosenEntry < 1 || userChosenEntry > contentService.getNumberOfContentEntries()) {
+            while (userChosenEntry < 1 || userChosenEntry > contentService.contentArray.size()) {
                 MenuFormatting.menuPrint("Invalid command, please try again.");
-                MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
+                MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentArray.size());
                 System.out.print("# ");
                 userChosenEntry = scanner.nextInt();
                 scanner.nextLine(); /* discard newline character: '\n' */
@@ -297,6 +306,30 @@ class UserOptions {
         } else if (userPromptChoice.equals("n")) {
             /* handled externally in handleUserChoice() */
         }
+    }
+
+    void displayEntriesToDelete(Scanner scanner) {
+        int userChosenEntry = 0;
+        optionSelectedText(4);
+
+        contentService.displayContentEntries();
+
+        // TODO - Add option to open all entries as once as well
+        /* Keeps track if user selects 'y', 'n' or another option */
+        MenuFormatting.menuPrint("Which entry do you want to delete?");
+        System.out.print("# ");
+        userChosenEntry = scanner.nextInt();
+        scanner.nextLine(); /* discard newline character: '\n' */
+
+        while (userChosenEntry < 1 || userChosenEntry > contentService.contentArray.size()) {
+            MenuFormatting.menuPrint("Invalid command, please try again.");
+            MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentArray.size());
+            System.out.print("# ");
+            userChosenEntry = scanner.nextInt();
+            scanner.nextLine(); /* discard newline character: '\n' */
+        }
+
+        contentService.deleteContent(userChosenEntry);
     }
 
     void searchEntries(Scanner scanner) {
@@ -358,6 +391,11 @@ class ContentService {
         return;
     }
 
+    public void deleteContent(int id) {
+        contentArray.remove(id - 1);
+        id--;
+    }
+
     // TODO - Add ability to search by Title / id
     public void viewContentById(int id) {
         /* the array id starts from 0, not 1 */
@@ -380,20 +418,12 @@ class ContentService {
         return contentArray.get(arrayId).title;
     }
 
-    public int getNumberOfContentEntries() {
-        /*
-         * return current id value -1
-         * (since id was incremented but latest value is not yet used)
-         */
-        return id - 1;
-    }
-
     public void displayContentEntries() {
         /*
          * Go through every content entry / post in the 'database'
          * Display the title of each entry
          */
-        for (int i = 1; i <= getNumberOfContentEntries(); i++) {
+        for (int i = 1; i <= contentArray.size(); i++) {
             /*
              * id starts at 0;
              * we add 1 to the id so the user sees entries starting from 1, not 0.
@@ -409,7 +439,7 @@ class ContentService {
          * Go through every content entry / post in the 'database'
          * Display the title of each entry
          */
-        for (int i = 1; i <= getNumberOfContentEntries(); i++) {
+        for (int i = 1; i <= contentArray.size(); i++) {
             /*
              * id starts at 0;
              * we add 1 to the id so the user sees entries starting from 1, not 0.
