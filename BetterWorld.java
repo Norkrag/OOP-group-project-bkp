@@ -100,6 +100,7 @@ class UserOptions {
     }
 
     public static String handleUserYesNo(Scanner scanner, String... optionalMessage) {
+        /* If message exists */
         if (optionalMessage[0].length() > 0) {
             MenuFormatting.menuPrint("");
             MenuFormatting.menuPrint(optionalMessage[0]);
@@ -116,6 +117,7 @@ class UserOptions {
             if (wrongInput) {
                 MenuFormatting.menuPrint("");
                 MenuFormatting.menuPrint("Invalid command, please try again.");
+                /* If message exists */
                 if (optionalMessage[0].length() > 0) {
                     MenuFormatting.menuPrint(optionalMessage[0]);
                 }
@@ -279,21 +281,22 @@ class UserOptions {
         if (userPromptChoice.equals("y")) {
             /* Nothing, continue with program */
             optionSelectedText(4);
-    
-            contentService.displayContentEntries();
+
+            contentService.displayContentEntryList();
             MenuFormatting.menuPrint("Which entry do you want to delete?");
             System.out.print("# ");
             userChosenEntry = scanner.nextInt();
             scanner.nextLine(); /* discard newline character: '\n' */
-    
-            while (userChosenEntry < 1 || userChosenEntry > contentService.contentArray.size()) {
+
+            /* Check contentEntryArrayList for it's size, that's how many entries there are */
+            while (userChosenEntry < 1 || userChosenEntry > contentService.contentEntryArrayList.size()) {
                 MenuFormatting.menuPrint("Invalid command, please try again.");
-                MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentArray.size());
+                MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentEntryArrayList.size());
                 System.out.print("# ");
                 userChosenEntry = scanner.nextInt();
                 scanner.nextLine(); /* discard newline character: '\n' */
             }
-    
+
             contentService.deleteContent(userChosenEntry);
             return Main.quitApplication;
         }
@@ -308,7 +311,7 @@ class UserOptions {
         int userChosenEntry = 0;
         optionSelectedText(1);
 
-        contentService.displayContentEntries();
+        contentService.displayContentEntryList();
 
         // TODO - Add option to open all entries as once as well
         /* Keeps track if user selects 'y', 'n' or another option */
@@ -317,14 +320,15 @@ class UserOptions {
         if (userPromptChoice.equals("y")) {
             MenuFormatting.menuPrint("");
             MenuFormatting.menuPrint("Which entry?");
-            MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentArray.size());
+            MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentEntryArrayList.size());
             System.out.print("# ");
             userChosenEntry = scanner.nextInt();
             scanner.nextLine(); /* discard newline character: '\n' */
 
-            while (userChosenEntry < 1 || userChosenEntry > contentService.contentArray.size()) {
+            /* Check contentEntryArrayList for it's size, that's how many entries there are */
+            while (userChosenEntry < 1 || userChosenEntry > contentService.contentEntryArrayList.size()) {
                 MenuFormatting.menuPrint("Invalid command, please try again.");
-                MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentArray.size());
+                MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentEntryArrayList.size());
                 System.out.print("# ");
                 userChosenEntry = scanner.nextInt();
                 scanner.nextLine(); /* discard newline character: '\n' */
@@ -342,14 +346,16 @@ class UserOptions {
         String userSearchCriteria = scanner.nextLine();
         MenuFormatting.menuPrint("");
         MenuFormatting.menuPrint("Here are the results for your search:");
-        contentService.displayContentEntriesMatchingCriteria(userSearchCriteria);
+        /* Displays ONLY entries matching search criteria */
+        contentService.displayContentEntryListContainingSearchTermInTitle(userSearchCriteria);
     }
 }
 
 class ContentService {
     /* Start id at 1 for user accesibility */
+    /* So Content Entries are numbered 1, 2, 3, ... etc. */
     int id = 1;
-    ArrayList<ContentEntry> contentArray = new ArrayList<ContentEntry>();
+    ArrayList<ContentEntry> contentEntryArrayList = new ArrayList<ContentEntry>();
 
     static class ContentEntry {
         public int id;
@@ -388,8 +394,8 @@ class ContentService {
         contentEntry.title = title;
         contentEntry.content = content;
 
-        /* Add the newly created ContentEntry to the contentArray */
-        contentArray.add(contentEntry);
+        /* Add the newly created ContentEntry to the contentEntryArrayList */
+        contentEntryArrayList.add(contentEntry);
         /*
          * Increment the id since the current id was used for an entry.
          * As ids should be unique, this id should not be available anymore
@@ -400,21 +406,23 @@ class ContentService {
     }
 
     public void deleteContent(int id) {
-        contentArray.remove(id - 1);
+        /* remove last element */
+        contentEntryArrayList.remove(id - 1);
+        /* decrement id, we have less elements now */
         id--;
     }
 
     public void viewContentById(int id) {
-        /* the array id starts from 0, not 1 */
+        /* in the program the array id starts from 0, not 1 */
         final int arrayId = id - 1;
 
         MenuFormatting.menuPrint("");
         MenuFormatting.menuPrintFullLine();
-        MenuFormatting.menuPrintWithSpacingEnclosed(5, contentArray.get(arrayId).title);
+        MenuFormatting.menuPrintWithSpacingEnclosed(5, contentEntryArrayList.get(arrayId).title);
         MenuFormatting.menuPrintFullLine();
         MenuFormatting.menuPrint("");
-        for (int i = 0; i < contentArray.get(arrayId).content.length; i++) {
-            MenuFormatting.menuPrint(contentArray.get(arrayId).content[i]);
+        for (int i = 0; i < contentEntryArrayList.get(arrayId).content.length; i++) {
+            MenuFormatting.menuPrint(contentEntryArrayList.get(arrayId).content[i]);
         }
         MenuFormatting.menuPrint("");
         MenuFormatting.menuPrintFullLine();
@@ -424,15 +432,16 @@ class ContentService {
         /* the array id starts from 0, not 1 */
         final int arrayId = id - 1;
 
-        return contentArray.get(arrayId).title;
+        /* return the Content Entry form the Array list found at the given index */
+        return contentEntryArrayList.get(arrayId).title;
     }
 
-    public void displayContentEntries() {
+    public void displayContentEntryList() {
         /*
          * Go through every content entry / post in the 'database'
          * Display the title of each entry
          */
-        for (int i = 1; i <= contentArray.size(); i++) {
+        for (int i = 1; i <= contentEntryArrayList.size(); i++) {
             /*
              * id starts at 0;
              * we add 1 to the id so the user sees entries starting from 1, not 0.
@@ -443,12 +452,12 @@ class ContentService {
         }
     }
 
-    public void displayContentEntriesMatchingCriteria(String searchTerm) {
+    public void displayContentEntryListContainingSearchTermInTitle(String searchTerm) {
         /*
          * Go through every content entry / post in the 'database'
          * Display the title of each entry
          */
-        for (int i = 1; i <= contentArray.size(); i++) {
+        for (int i = 1; i <= contentEntryArrayList.size(); i++) {
             /*
              * id starts at 0;
              * we add 1 to the id so the user sees entries starting from 1, not 0.
