@@ -60,7 +60,7 @@ class Main {
                 if (optionalMessage[0].length() > 0) {
                     System.out.println(optionalMessage[0]);
                 }
-                System.out.println("y/n\n");
+                System.out.println("y/n");
             }
             userPromptChoice = scanner.nextLine();
             /*
