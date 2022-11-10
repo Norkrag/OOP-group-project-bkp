@@ -80,7 +80,6 @@ class Main {
             MenuFormatting.menuPrint("");
             MenuFormatting.menuPrint(optionalMessage[0]);
             MenuFormatting.menuPrint("y/n");
-
         }
 
         /* Keeps track if user selects 'y', 'n' or another option */
@@ -142,9 +141,8 @@ class UserOptions {
             MenuFormatting.menuPrint("2. Search for an entry");
             MenuFormatting.menuPrint("3. Add Entry");
             MenuFormatting.menuPrint("4. Delete Entry");
-            MenuFormatting.menuPrint("5. Edit Entry");
-            MenuFormatting.menuPrint("6. Log off");
-            MenuFormatting.menuPrint("7. Quit");
+            MenuFormatting.menuPrint("5. Log off");
+            MenuFormatting.menuPrint("6. Quit");
         } else {
             System.out.println("Error! Invalid role.");
         }
@@ -175,7 +173,7 @@ class UserOptions {
         int maxUserOptions = 0;
 
         if (userPrivilleges == "admin") {
-            maxUserOptions = 7;
+            maxUserOptions = 6;
         } else if (userPrivilleges == "guest") {
             maxUserOptions = 4;
         }
@@ -209,35 +207,32 @@ class UserOptions {
                      * Each user has a separate menu with different numbers
                      */
                 if (userPrivilleges == "admin") {
-                    MenuFormatting.menuPrint("ToDo - Adding entry...");
+                    addEntry();
                     returnCode = handleOptionFinished(scanner);
                 } else if (userPrivilleges == "guest") {
                     MenuFormatting.menuPrint("Logging off...");
                     returnCode = 0; /* handle externally - go back to authentication */
                 }
                 break;
-            // TODO - Placeholder, need to implement
             case 4: /*
                      * Different action depending on user type.
                      * Each user has a separate menu with different numbers
                      */
                 if (userPrivilleges == "admin") {
-                    deleteEntry(scanner);
+                    returnCode = deleteEntry(scanner);
+                    /* if returnCode was not changed by deleteEntry */
+                    if (returnCode == 1) {
                     returnCode = handleOptionFinished(scanner);
+                    }
                 } else if (userPrivilleges == "guest") {
                     /* application will quit in main */
                 }
                 break;
             // TODO - Placeholder, need to implement
             case 5: /* Only admin has options 5+ */
-                MenuFormatting.menuPrint("ToDo - Editing entry...");
-                returnCode = handleOptionFinished(scanner);
-                break;
-            // TODO - Placeholder, need to implement
-            case 6: /* Only admin has options 5+ */
                 MenuFormatting.menuPrint("Logging off...");
                 returnCode = 0; /* handle externally - go back to authentication */
-            case 7: /* Only admin has options 5+ */
+            case 6: /* Only admin has options 5+ */
                 /* application will quit in main */
                 break;
             default:
@@ -267,9 +262,23 @@ class UserOptions {
         }
     }
 
-    void deleteEntry(Scanner scanner) {
-        MenuFormatting.menuPrint("Which entry do you want to delete?");
-        displayEntriesToDelete(scanner);
+    void addEntry() {
+        MenuFormatting.menuPrint("ToDo - Adding entry...");
+    }
+
+    int deleteEntry(Scanner scanner) {
+        String userPromptChoice = Main.handleUserYesNo(scanner, "Are you sure you want to delete an entry?");
+        if (userPromptChoice.equals("y")) {
+            /* Nothing, continue with program */
+            MenuFormatting.menuPrint("Which entry do you want to delete?");
+            displayEntriesToDelete(scanner);
+            return 1;
+        }
+        if (userPromptChoice.equals("n")) {
+            return 2;
+        }
+
+        return 1;
     }
 
     void displayEntries(Scanner scanner) {
