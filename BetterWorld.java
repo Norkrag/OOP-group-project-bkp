@@ -28,8 +28,6 @@ class Main {
     final static int backtoOptionMenu = 2;
 
     public static void main(String[] args) {
-        // TODO - Add menu formatting to user input as well (add missing # at left
-        // column)
         Scanner scanner = new Scanner(System.in);
 
         /*
@@ -165,7 +163,6 @@ class UserOptions {
             maxUserOptions = 4;
         }
 
-        // TODO - Handle non int input (for all nextInt() in code)
         System.out.print("# ");
         int userMenuChoice = scanner.nextInt();
         scanner.nextLine(); /* discard newline character: '\n' */
@@ -193,10 +190,6 @@ class UserOptions {
                      * Each user has a separate menu with different numbers
                      */
                 if (userPrivilleges == "admin") {
-                    /*
-                     * TODO - Fix addEntry implementation to allow user to enter
-                     * multi row content that doesn't crash program when reaching left border
-                     */
                     addEntry(scanner);
                     returnCode = handleOptionFinished(scanner);
                 } else if (userPrivilleges == "guest") {
@@ -233,7 +226,6 @@ class UserOptions {
 
     void optionSelectedText(int optionNumber) {
         MenuFormatting.menuPrint("");
-        // TODO - Add Edit Entry option
         switch (optionNumber) {
             case 1:
                 MenuFormatting.menuPrint("Option selected: View Entries");
@@ -313,7 +305,6 @@ class UserOptions {
 
         contentService.displayContentEntryList();
 
-        // TODO - Add option to open all entries as once as well
         /* Keeps track if user selects 'y', 'n' or another option */
         String userPromptChoice = handleUserYesNo(scanner, "Do you want to view a specific entry?");
 
@@ -373,7 +364,6 @@ class ContentService {
     }
 
     private void initializeContent() {
-        // TODO - Handle 0 content entry bugs (Can't view specific entry for ex)
         this.createContent("An Introduction",
                 "The global average temperature has increased by more than one degree",
                 "Celsius since the pre-industrial era, and the trend is worrying.",
