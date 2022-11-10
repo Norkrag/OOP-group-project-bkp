@@ -312,24 +312,32 @@ class ContentService {
         return;
     }
 
+    private String returnStringOfHashes(int numberOfHashes) {
+        String hashes = "";
+
+        for(int i = 0; i < numberOfHashes; i++) {
+            hashes += "#";
+        }
+        
+        // Main.debugPrint("returnStringOfHashes/hashes" + hashes);
+        return hashes;
+    }
+
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
-
     // TODO - Add ability to search by Title / id
     public void viewContentById(int id) {
         /* the array id starts from 0, not 1 */
         final int arrayId = id - 1;
 
         System.out.println("");
+        System.out.println(returnStringOfHashes(72));
+        System.out.println("##### " + contentArray.get(arrayId).title + " " + returnStringOfHashes(72 - 6 - contentArray.get(arrayId).title.length() - 1));
+        System.out.println(returnStringOfHashes(72));
         System.out.println("");
-
-        // TODO - Why does it only work sometimes?
-        // System.out.println(ANSI_GREEN + contentArray.get(arrayId).title +
-        // ANSI_RESET);
-        System.out.println(contentArray.get(arrayId).title);
-        System.out.println("");
-
         System.out.println(contentArray.get(arrayId).content);
+        System.out.println("");
+        System.out.println(returnStringOfHashes(72));
     }
 
     private String returnContentTitleForId(int id) {
