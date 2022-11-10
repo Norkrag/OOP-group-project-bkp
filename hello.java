@@ -59,6 +59,7 @@ class UserOptions {
             System.out.println("1. View Entries");
             System.out.println("2. Search for an entry");
             System.out.println("3. Log off");
+            System.out.println("4. Quit");
         } else if (userPrivilleges == "admin") {
             System.out.println("1. View Entries");
             System.out.println("2. Search for an entry");
@@ -66,6 +67,7 @@ class UserOptions {
             System.out.println("4. Delete Entry");
             System.out.println("5. Edit Entry");
             System.out.println("6. Log off");
+            System.out.println("7. Quit");
         } else {
             System.out.println("Invalid role");
         }
@@ -79,9 +81,9 @@ class UserOptions {
         int maxUserOptions = 0;
 
         if (userPrivilleges == "admin") {
-            maxUserOptions = 5;
+            maxUserOptions = 7;
         } else if (userPrivilleges == "guest") {
-            maxUserOptions = 2;
+            maxUserOptions = 4;
         }
 
         // TODO - Handle non int input (for all nextInt() in code)
