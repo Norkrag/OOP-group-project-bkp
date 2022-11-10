@@ -53,12 +53,13 @@ class Main {
         contentService.createContent("Title 2", "Content2");
         contentService.createContent("Title 3", "Content3");
 
+        System.out.println("");
+        MenuFormatting.menuPrintFullLine();
+        MenuFormatting.menuPrintWithSpacingEnclosed(5, WELCOME_MESSAGE);
+        MenuFormatting.menuPrintFullLine();
+
         do {
             Main.debugPrint("returnCode = " + returnCode);
-            System.out.println("");
-            MenuFormatting.menuPrintFullLine();
-            MenuFormatting.menuPrintWithSpacingEnclosed(5, WELCOME_MESSAGE);
-            MenuFormatting.menuPrintFullLine();
 
             if (returnCode == 0) {
                 userService.authenticate(scanner);
