@@ -13,7 +13,7 @@ class Main {
     }
 
     /* Set to false if you don't want debug messages in console */
-    static boolean debug = false;
+    static boolean debug = true;
     /* End | Remove debugging code */
 
     static ContentService contentService = new ContentService();
@@ -21,6 +21,7 @@ class Main {
     static UserOptions userOptions = new UserOptions(contentService);
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         /* initialize returnCode with 0 to allow user authentication during first run */
         int returnCode = 0;
         /*
@@ -32,13 +33,18 @@ class Main {
         contentService.createContent("Title 3", "Content3");
 
         do {
+            Main.debugPrint("returnCode = " + returnCode);
             if (returnCode == 0) {
-                userService.authenticate();
+                userService.authenticate(scanner);
             }
             userOptions.setPrivileges(userService.privilleges);
             userOptions.displayOptionsMenu();
             returnCode = userOptions.handleUserChoice();
         } while (returnCode != 1);
+
+        scanner.close();
+        System.out.println("");
+        System.out.println("Quitting application...");
     }
 
     public static String handleUserYesNo(Scanner scanner, String... optionalMessage) {
@@ -47,7 +53,7 @@ class Main {
             System.out.println(optionalMessage[0]);
             System.out.println("y/n");
         }
- 
+
         /* Keeps track if user selects 'y', 'n' or another option */
         String userPromptChoice = "";
         /* Set to true when user does not answer with 'y' or 'n' to 'y/n' dialogue */
@@ -141,60 +147,60 @@ class UserOptions {
             scanner.nextLine(); /* discard newline character: '\n' */
         }
 
+        int returnCode = 1;
         switch (userMenuChoice) {
-            /* Both user types have this option */
-            case 1:
+            case 1: /* Both user types have this option */
                 displayEntries(scanner);
-                return 2; /* handle externally - go back to option list */
-            /* Both user types have this option */
-            case 2:
+                String userPromptChoice = Main.handleUserYesNo(scanner,
+                        "Do you want to go back to the options menu? If not, application will quit.");
+                if (userPromptChoice.equals("y")) {
+                    returnCode = 2; /* handle externally - go back to option list */
+                } else if (userPromptChoice.equals("n")) {
+                    returnCode = 1; /* handle externally - quit application */
+                }
+                break;
+            case 2: /* Both user types have this option */
                 searchEntries(scanner);
                 break;
             // TODO - Placeholder, need to implement
-            /*
-             * Different action depending on user type.
-             * Each user has a separate menu with different numbers
-             */
-            case 3:
+            case 3: /*
+                     * Different action depending on user type.
+                     * Each user has a separate menu with different numbers
+                     */
                 if (userPrivilleges == "admin") {
                     System.out.println("ToDo - Adding entry...");
                 } else if (userPrivilleges == "guest") {
                     System.out.println("Logging off...");
-                    return 0; /* handle externally - go back to authentication */
+                    returnCode = 0; /* handle externally - go back to authentication */
                 }
                 break;
             // TODO - Placeholder, need to implement
-            /*
-             * Different action depending on user type.
-             * Each user has a separate menu with different numbers
-             */
-            case 4:
+            case 4: /*
+                     * Different action depending on user type.
+                     * Each user has a separate menu with different numbers
+                     */
                 if (userPrivilleges == "admin") {
                     System.out.println("ToDo - Deleting entry...");
                 } else if (userPrivilleges == "guest") {
-                    System.out.println("Quitting application...");
+                    /* application will quit in main */
                 }
                 break;
             // TODO - Placeholder, need to implement
-            /* Only admin has options 5+ */
-            case 5:
+            case 5: /* Only admin has options 5+ */
                 System.out.println("ToDo - Editing entry...");
                 break;
             // TODO - Placeholder, need to implement
-            /* Only admin has options 5+ */
-            case 6:
+            case 6: /* Only admin has options 5+ */
                 System.out.println("Logging off...");
-                return 0; /* handle externally - go back to authentication */
-            /* Only admin has options 5+ */
-            case 7:
-                System.out.println("Quitting application...");
+                returnCode = 0; /* handle externally - go back to authentication */
+            case 7: /* Only admin has options 5+ */
+                /* application will quit in main */
                 break;
             default:
                 System.out.println("Error! Code should not be reached");
         }
 
-        scanner.close();
-        return 1;
+        return returnCode; /* handle externally - quit application */
     }
 
     void optionSelectedText(int optionNumber) {
@@ -244,7 +250,7 @@ class UserOptions {
              */
             contentService.viewContentById(userChosenEntry);
         } else if (userPromptChoice.equals("n")) {
-            System.out.println("Going back to main menu...");
+            /* handled externally in handleUserChoice() */
         }
     }
 
@@ -562,17 +568,15 @@ class UserService {
     /* Initialize privileges as guest */
     public String privilleges = "guest";
 
-    public void authenticate() {
+    public void authenticate(Scanner scanner) {
         String password = "password";
         /* Create a new scanner object to be able to parse user input */
-        Scanner scanner = new Scanner(System.in);
-        
+
         String userPasswordInput = "";
         Integer userDialogueChoice = 0;
 
         /* Keeps track if user selects 'y', 'n' or another option */
         String userPromptChoice = Main.handleUserYesNo(scanner, "Do you want to authenticate as administrator?");
-
 
         if (userPromptChoice.equals("y")) {
             /*
