@@ -45,13 +45,6 @@ class Main {
         int returnCode = 0;
         String APPLICATION_NAME = "APPLICATION_NAME";
         String WELCOME_MESSAGE = "Welcome to " + APPLICATION_NAME;
-        /*
-         * Test - create some content
-         * This should be possible to do from the application when implemented
-         */
-        contentService.createContent("Title 1", "Content1");
-        contentService.createContent("Title 2", "Content2");
-        contentService.createContent("Title 3", "Content3");
 
         System.out.println("");
         MenuFormatting.menuPrintFullLine();
@@ -207,7 +200,7 @@ class UserOptions {
                      * Each user has a separate menu with different numbers
                      */
                 if (userPrivilleges == "admin") {
-                    addEntry();
+                    addEntry(scanner);
                     returnCode = handleOptionFinished(scanner);
                 } else if (userPrivilleges == "guest") {
                     MenuFormatting.menuPrint("Logging off...");
@@ -222,7 +215,7 @@ class UserOptions {
                     returnCode = deleteEntry(scanner);
                     /* if returnCode was not changed by deleteEntry */
                     if (returnCode == 1) {
-                    returnCode = handleOptionFinished(scanner);
+                        returnCode = handleOptionFinished(scanner);
                     }
                 } else if (userPrivilleges == "guest") {
                     /* application will quit in main */
@@ -253,6 +246,11 @@ class UserOptions {
                 MenuFormatting.menuPrint("Option selected: Search for an entry");
                 MenuFormatting.menuPrint("Enter your search term to search for a specific title:");
                 break;
+            case 3:
+                MenuFormatting.menuPrint("Option selected: Add Entry");
+                MenuFormatting.menuPrint("You will need to enter a title and the content of the entry.");
+                MenuFormatting.menuPrint("");
+                break;
             case 4:
                 MenuFormatting.menuPrint("Option selected: Delete Entry");
                 MenuFormatting.menuPrint("Showing entries:");
@@ -262,8 +260,21 @@ class UserOptions {
         }
     }
 
-    void addEntry() {
-        MenuFormatting.menuPrint("ToDo - Adding entry...");
+    void addEntry(Scanner scanner) {
+        optionSelectedText(3);
+
+        String newContentEntryTitle = "";
+        String newContentEntryContent = "";
+        MenuFormatting.menuPrint("Enter title");
+        System.out.print("# ");
+        newContentEntryTitle = scanner.nextLine();
+        
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrint("Enter content");
+        System.out.print("# ");
+        newContentEntryContent = scanner.nextLine();
+
+        contentService.createContent(newContentEntryTitle, newContentEntryContent);
     }
 
     int deleteEntry(Scanner scanner) {
