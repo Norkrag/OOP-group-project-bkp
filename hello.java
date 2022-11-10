@@ -39,6 +39,7 @@ class Main {
     static UserOptions userOptions = new UserOptions(contentService);
 
     public static void main(String[] args) {
+        // TODO - Add menu formatting to user input as well
         Scanner scanner = new Scanner(System.in);
         /* initialize returnCode with 0 to allow user authentication during first run */
         int returnCode = 0;
