@@ -1,0 +1,2 @@
+# Ignore launch.json vrom .vscode folder; Don't commit changes made on that file
+.vscode/launch.json
