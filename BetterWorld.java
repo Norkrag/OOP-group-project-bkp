@@ -70,6 +70,35 @@ class UserOptions {
         this.contentService = contentService;
     }
 
+    void setPrivileges(String privileges) {
+        userPrivilleges = privileges;
+    }
+
+    void displayOptionsMenu() {
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrint("Please enter a number depending on what you want to do.");
+        MenuFormatting.menuPrint("Here are your options:");
+
+        if (userPrivilleges == "guest") {
+            MenuFormatting.menuPrint("1. View Entries");
+            MenuFormatting.menuPrint("2. Search for an entry");
+            MenuFormatting.menuPrint("3. Log off");
+            MenuFormatting.menuPrint("4. Quit");
+        } else if (userPrivilleges == "admin") {
+            MenuFormatting.menuPrint("1. View Entries");
+            MenuFormatting.menuPrint("2. Search for an entry");
+            MenuFormatting.menuPrint("3. Add Entry");
+            MenuFormatting.menuPrint("4. Delete Entry");
+            MenuFormatting.menuPrint("5. Log off");
+            MenuFormatting.menuPrint("6. Quit");
+        } else {
+            System.out.println("Error! Invalid role.");
+        }
+        MenuFormatting.menuPrint("");
+        MenuFormatting.menuPrint("What do you want to do?");
+        MenuFormatting.menuPrint("Option number:");
+    }
+
     public static String handleUserYesNo(Scanner scanner, String... optionalMessage) {
         if (optionalMessage[0].length() > 0) {
             MenuFormatting.menuPrint("");
@@ -105,35 +134,6 @@ class UserOptions {
         } while (!(userPromptChoice.equals("y") || userPromptChoice.equals("n")));
 
         return userPromptChoice;
-    }
-
-    void setPrivileges(String privileges) {
-        userPrivilleges = privileges;
-    }
-
-    void displayOptionsMenu() {
-        MenuFormatting.menuPrint("");
-        MenuFormatting.menuPrint("Please enter a number depending on what you want to do.");
-        MenuFormatting.menuPrint("Here are your options:");
-
-        if (userPrivilleges == "guest") {
-            MenuFormatting.menuPrint("1. View Entries");
-            MenuFormatting.menuPrint("2. Search for an entry");
-            MenuFormatting.menuPrint("3. Log off");
-            MenuFormatting.menuPrint("4. Quit");
-        } else if (userPrivilleges == "admin") {
-            MenuFormatting.menuPrint("1. View Entries");
-            MenuFormatting.menuPrint("2. Search for an entry");
-            MenuFormatting.menuPrint("3. Add Entry");
-            MenuFormatting.menuPrint("4. Delete Entry");
-            MenuFormatting.menuPrint("5. Log off");
-            MenuFormatting.menuPrint("6. Quit");
-        } else {
-            System.out.println("Error! Invalid role.");
-        }
-        MenuFormatting.menuPrint("");
-        MenuFormatting.menuPrint("What do you want to do?");
-        MenuFormatting.menuPrint("Option number:");
     }
 
     int handleOptionFinished(Scanner scanner) {
