@@ -194,6 +194,7 @@ class UserOptions {
 
         System.out.println("Here are the results for your search:");
         contentService.displayContentEntriesMatchingCriteria(userSearchCriteria);
+        // TODO - Go Back to main menu
     }
 }
 
