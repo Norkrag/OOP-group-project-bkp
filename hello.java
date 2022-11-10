@@ -56,6 +56,7 @@ class Main {
         /* Keep prompting user until they give a valid answer, either 'y' or 'n' */
         do {
             if (wrongInput) {
+                System.out.println("");
                 System.out.println("Invalid command, please try again.");
                 if (optionalMessage[0].length() > 0) {
                     System.out.println(optionalMessage[0]);
