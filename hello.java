@@ -97,14 +97,19 @@ class UserOptions {
             scanner.nextLine(); /* discard newline character: '\n' */
         }
 
-        if (userMenuChoice == 1) {
-            displayEntries(scanner, userMenuChoice);
+        switch (userMenuChoice) {
+            case 1:
+                displayEntries(scanner);
+                break;
+            default:
+                System.out.println("Error! Code should not be reached");
         }
 
         scanner.close();
     }
 
-    void displayEntries(Scanner scanner, int userMenuChoice) {
+    void displayEntries(Scanner scanner) {
+        int userChosenEntry = 0;
         System.out.println("");
         System.out.println("Option selected: View Entries");
         System.out.println("Showing entries:");
@@ -117,6 +122,7 @@ class UserOptions {
         /* Set to true when user does not answer with 'y' or 'n' to 'y/n' dialogue */
         boolean wrongInput = false;
 
+        // TODO - Add option to open all entries as once as well
         System.out.println("Do you want to view a specific entry?");
         System.out.println("y/n");
 
@@ -138,20 +144,20 @@ class UserOptions {
         } while (!(userPromptChoice.equals("y") || userPromptChoice.equals("n")));
 
         if (userPromptChoice.equals("y")) {
-
+            System.out.println("");
             System.out.println("Which entry?");
             System.out.println("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
-            userMenuChoice = scanner.nextInt();
+            userChosenEntry = scanner.nextInt();
             scanner.nextLine(); /* discard newline character: '\n' */
 
-            while (userMenuChoice < 1 || userMenuChoice > contentService.getNumberOfContentEntries()) {
+            while (userChosenEntry < 1 || userChosenEntry > contentService.getNumberOfContentEntries()) {
                 System.out.println("Invalid command, please try again.");
                 System.out.println("Enter a number between 1 and " + contentService.getNumberOfContentEntries());
-                userMenuChoice = scanner.nextInt();
+                userChosenEntry = scanner.nextInt();
                 scanner.nextLine(); /* discard newline character: '\n' */
             }
 
-            contentService.viewContentById(userMenuChoice);
+            contentService.viewContentById(userChosenEntry);
         } else if (userPromptChoice.equals("n")) {
             System.out.println("Going back to main menu...");
             displayOptionsMenu();
@@ -209,6 +215,7 @@ class ContentService {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
+
     // TODO - Add ability to search by Title / id
     public void viewContentById(int id) {
         /* the array id starts from 0, not 1 */
@@ -216,9 +223,10 @@ class ContentService {
 
         System.out.println("");
         System.out.println("");
-        
-        //TODO - Why does it only work sometimes?
-        // System.out.println(ANSI_GREEN + contentArray.get(arrayId).title + ANSI_RESET);
+
+        // TODO - Why does it only work sometimes?
+        // System.out.println(ANSI_GREEN + contentArray.get(arrayId).title +
+        // ANSI_RESET);
         System.out.println(contentArray.get(arrayId).title);
         System.out.println("");
 
