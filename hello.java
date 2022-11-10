@@ -217,7 +217,6 @@ class UserOptions {
             default:
                 System.out.println("Error! Code should not be reached");
         }
-        System.out.println("");
     }
 
     void displayEntries(Scanner scanner) {
@@ -382,7 +381,8 @@ class ContentService {
              * Display all ContentEntry(es) available by title and a number preceding each
              * title.
              */
-            if (returnContentTitleForId(i).contains(searchTerm)) {
+            /* Cast both strings to lowercase to allow user to search without case sensitivity */
+            if (returnContentTitleForId(i).toLowerCase().contains(searchTerm.toLowerCase())) {
                 System.out.println(i + ". " + returnContentTitleForId(i));
             }
         }
