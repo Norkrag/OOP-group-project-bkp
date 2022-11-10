@@ -20,19 +20,23 @@ class MenuFormatting {
 }
 
 class Main {
-    /* Set to false if you don't want debug messages in console */
-    static boolean debug = false;
-    /* End | Remove debugging code */
-
     static ContentService contentService = new ContentService();
     static UserService userService = new UserService();
     static UserOptions userOptions = new UserOptions(contentService);
+    final static int backToLogin = 0;
+    final static int quitApplication = 1;
+    final static int backtoOptionMenu = 2;
 
     public static void main(String[] args) {
-        // TODO - Add menu formatting to user input as well (add missing # at left column)
+        // TODO - Add menu formatting to user input as well (add missing # at left
+        // column)
         Scanner scanner = new Scanner(System.in);
-        /* initialize returnCode with 0 to allow user authentication during first run */
-        int returnCode = 0;
+
+        /*
+         * initialize returnCode with 0 (backToLogin) to allow user authentication
+         * during first run
+         */
+        int returnCode = backToLogin;
         String APPLICATION_NAME = "BetterWorld.io";
         String WELCOME_MESSAGE = "Welcome to " + APPLICATION_NAME;
 
@@ -41,14 +45,15 @@ class Main {
         MenuFormatting.menuPrintWithSpacingEnclosed(5, WELCOME_MESSAGE);
         MenuFormatting.menuPrintFullLine();
 
+        /* Main loop */
         do {
-            if (returnCode == 0) {
+            if (returnCode == backToLogin) {
                 userService.authenticate(scanner);
             }
             userOptions.setPrivileges(userService.privilleges);
             userOptions.displayOptionsMenu();
             returnCode = userOptions.handleUserChoice();
-        } while (returnCode != 1);
+        } while (returnCode != quitApplication);
 
         scanner.close();
         MenuFormatting.menuPrint("");
@@ -132,13 +137,13 @@ class UserOptions {
     }
 
     int handleOptionFinished(Scanner scanner) {
-        int returnCode = 0;
+        int returnCode = Main.backToLogin;
         String userPromptChoice = Main.handleUserYesNo(scanner,
                 "Go back to the options menu? If not, application will quit.");
         if (userPromptChoice.equals("y")) {
-            returnCode = 2; /* handle externally - go back to option list */
+            returnCode = Main.backtoOptionMenu; /* handle externally - go back to option list */
         } else if (userPromptChoice.equals("n")) {
-            returnCode = 1; /* handle externally - quit application */
+            returnCode = Main.quitApplication; /* handle externally - quit application */
         }
 
         return returnCode;
@@ -171,7 +176,7 @@ class UserOptions {
             scanner.nextLine(); /* discard newline character: '\n' */
         }
 
-        int returnCode = 1;
+        int returnCode = Main.quitApplication;
         switch (userMenuChoice) {
             case 1: /* Both user types have this option */
                 displayEntries(scanner);
@@ -194,7 +199,7 @@ class UserOptions {
                     returnCode = handleOptionFinished(scanner);
                 } else if (userPrivilleges == "guest") {
                     MenuFormatting.menuPrint("Logging off...");
-                    returnCode = 0; /* handle externally - go back to authentication */
+                    returnCode = Main.backToLogin; /* handle externally - go back to authentication */
                 }
                 break;
             case 4: /*
@@ -204,7 +209,7 @@ class UserOptions {
                 if (userPrivilleges == "admin") {
                     returnCode = deleteEntry(scanner);
                     /* if returnCode was not changed by deleteEntry */
-                    if (returnCode == 1) {
+                    if (returnCode == Main.quitApplication) {
                         returnCode = handleOptionFinished(scanner);
                     }
                 } else if (userPrivilleges == "guest") {
@@ -213,7 +218,7 @@ class UserOptions {
                 break;
             case 5: /* Only admin has options 5+ */
                 MenuFormatting.menuPrint("Logging off...");
-                returnCode = 0; /* handle externally - go back to authentication */
+                returnCode = Main.backToLogin; /* handle externally - go back to authentication */
             case 6: /* Only admin has options 5+ */
                 /* application will quit in main */
                 break;
@@ -269,17 +274,34 @@ class UserOptions {
 
     int deleteEntry(Scanner scanner) {
         String userPromptChoice = Main.handleUserYesNo(scanner, "Are you sure you want to delete an entry?");
+        int userChosenEntry = 0;
+
         if (userPromptChoice.equals("y")) {
             /* Nothing, continue with program */
+            optionSelectedText(4);
+    
+            contentService.displayContentEntries();
             MenuFormatting.menuPrint("Which entry do you want to delete?");
-            displayEntriesToDelete(scanner);
-            return 1;
+            System.out.print("# ");
+            userChosenEntry = scanner.nextInt();
+            scanner.nextLine(); /* discard newline character: '\n' */
+    
+            while (userChosenEntry < 1 || userChosenEntry > contentService.contentArray.size()) {
+                MenuFormatting.menuPrint("Invalid command, please try again.");
+                MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentArray.size());
+                System.out.print("# ");
+                userChosenEntry = scanner.nextInt();
+                scanner.nextLine(); /* discard newline character: '\n' */
+            }
+    
+            contentService.deleteContent(userChosenEntry);
+            return Main.quitApplication;
         }
         if (userPromptChoice.equals("n")) {
-            return 2;
+            return Main.backtoOptionMenu;
         }
 
-        return 1;
+        return Main.quitApplication;
     }
 
     void displayEntries(Scanner scanner) {
@@ -314,34 +336,11 @@ class UserOptions {
         }
     }
 
-    void displayEntriesToDelete(Scanner scanner) {
-        int userChosenEntry = 0;
-        optionSelectedText(4);
-
-        contentService.displayContentEntries();
-        MenuFormatting.menuPrint("Which entry do you want to delete?");
-        System.out.print("# ");
-        userChosenEntry = scanner.nextInt();
-        scanner.nextLine(); /* discard newline character: '\n' */
-
-        while (userChosenEntry < 1 || userChosenEntry > contentService.contentArray.size()) {
-            MenuFormatting.menuPrint("Invalid command, please try again.");
-            MenuFormatting.menuPrint("Enter a number between 1 and " + contentService.contentArray.size());
-            System.out.print("# ");
-            userChosenEntry = scanner.nextInt();
-            scanner.nextLine(); /* discard newline character: '\n' */
-        }
-
-        contentService.deleteContent(userChosenEntry);
-    }
-
     void searchEntries(Scanner scanner) {
         optionSelectedText(2);
-
         System.out.print("# ");
         String userSearchCriteria = scanner.nextLine();
         MenuFormatting.menuPrint("");
-
         MenuFormatting.menuPrint("Here are the results for your search:");
         contentService.displayContentEntriesMatchingCriteria(userSearchCriteria);
     }
@@ -368,7 +367,7 @@ class ContentService {
     }
 
     private void initializeContent() {
-
+        // TODO - Handle 0 content entry bugs (Can't view specific entry for ex)
         this.createContent("An Introduction",
                 "The global average temperature has increased by more than one degree",
                 "Celsius since the pre-industrial era, and the trend is worrying.",
